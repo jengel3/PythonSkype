@@ -1,0 +1,4 @@
+*.pyc
+config.json
+messages.txt
+log.txt

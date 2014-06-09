@@ -1,0 +1,3 @@
+tweepy
+Skype4Py
+oauth2
