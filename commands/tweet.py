@@ -28,6 +28,7 @@ def tweets(chat, message, args, sender):
         chat.SendMessage("Unable to process")
         return
 
+    print "heree!!!!!!!!!"
     api = get_api()
     user = api.get_user(args[0])
     if not user:

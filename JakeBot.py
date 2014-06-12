@@ -6,6 +6,9 @@ import logger
 import config
 import threading
 import Queue
+import sys
+
+sys.path += ['commands']
 
 
 func_handlers = {}
@@ -239,7 +242,6 @@ class Handler(object):
     def __init__(self, func):
         self.func = func
         self.input_queue = Queue.Queue()
-        # thread.start_new_thread(self.start, ())
         self.thread = threading.Thread(name='handler-%s' % func.__name__, target=self.start)
         self.thread.start()
 
@@ -248,7 +250,7 @@ class Handler(object):
             message = self.input_queue.get()
 
             if message == StopIteration:
-                continue
+                break
 
             try:
                 run(self.func, message)
@@ -256,6 +258,9 @@ class Handler(object):
                 import traceback
 
                 traceback.print_exc()
+
+    def stop(self):
+        self.input_queue.put(StopIteration)
 
     def add(self, message):
         self.input_queue.put(message)

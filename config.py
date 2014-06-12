@@ -24,8 +24,8 @@ class Config:
         json.dump(self.data, open('config.json', 'w'), sort_keys=True, indent=4)
         self.load()
 
-    def get_value(self, key):
-        return self.data[key]
+    def get_value(self, key, default=None):
+        return self.data[key] if key in self.data else default
 
     def set(self, key, value):
         new_key = {key: value}

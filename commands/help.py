@@ -8,8 +8,7 @@ def choose(chat, message, args, sender):
     for command, desc in JakeBot.command_helps.items():
         helps.update({command: desc})
 
-    messages = ["Commands:"]
+    message = "Commands:\n"
     for command, desc in helps.items():
-        messages.append("* " + str(command) + " - " + str(desc))
-    for message in messages:
-        chat.SendMessage(message)
+        message += "* " + str(command) + " - " + str(desc) + "\n"
+    chat.SendMessage(message)
