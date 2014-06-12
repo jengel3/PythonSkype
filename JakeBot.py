@@ -7,6 +7,7 @@ import config
 import threading
 import Queue
 import sys
+import inspect
 
 sys.path += ['commands']
 
@@ -112,25 +113,24 @@ def remove_permission(user, permission):
 #
 
 
-class Command(object):
+def Command(arg=None, **kwargs):
     args = {}
 
-    def __init__(self, **kwargs):
-        self.name = kwargs.get('name')
-        self.permission = kwargs.get('permission', None)
-        self.aliases = kwargs.get('aliases', None)
-        self.help = kwargs.get('help', None)
-        self.args.update({"name": self.name})
-        self.args.update({"permission": self.permission})
-        self.args.update({"aliases": self.aliases})
-        self.args.update({"help": self.help})
+    def wrapper(func):
+        add_command(args, func)
+        return func
 
-    def __call__(self, func):
-        def new_func(*args):
-            return self.name
-
-        add_command(self.args, func)
-        return new_func
+    args.update({"name": kwargs.get('name', None)})
+    args.update({"permission": kwargs.get('permission', None)})
+    args.update({"aliases": kwargs.get('aliases', None)})
+    args.update({"help": kwargs.get('help', None)})
+    if kwargs or not inspect.isfunction(arg):
+            if arg is not None:
+                args['name'] = arg
+            args.update(kwargs)
+            return wrapper
+    else:
+        return wrapper(arg)
 
 
 def load_plugins():
@@ -201,31 +201,6 @@ def dispatch(message, status):
         func = commands[command]
         handler = func_handlers[func]
         handler.add(message)
-
-
-#
-# Handles events
-#
-
-
-class Event(object):
-    def __init__(self, regex):
-        self.regex = regex
-
-    def __call__(self, func):
-        def new_func(*args):
-            return self.regex
-
-        add_event(self.regex, func)
-        return new_func
-
-
-def add_event(regex, func):
-    if regex is None:
-        print('Failed to load regex for an event, skipping...')
-        return
-    events.update({regex: func})
-    print("Registered event for the regex: %s" % regex)
 
 
 #
