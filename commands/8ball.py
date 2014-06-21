@@ -1,4 +1,4 @@
-from JakeBot import Command
+from plugin import command
 import random
 
 responses = ("The answer is no.", "Uh, no.", "I Guess so.", "Yeah sure whatever.",
@@ -10,7 +10,7 @@ responses = ("The answer is no.", "Uh, no.", "I Guess so.", "Yeah sure whatever.
              "Outlook good.", "Don't count on it.")
 
 
-@Command(name="8ball", help="Ask the 8ball of its opinion!")
+@command(name="8ball", help="Ask the 8ball of its opinion!")
 def eight_ball(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Ask a question :(")

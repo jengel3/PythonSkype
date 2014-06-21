@@ -1,6 +1,6 @@
-from JakeBot import Command
+from plugin import command
 
 
-@Command(name="hi", help="Say Hi!")
+@command(name="hi", help="Say Hi!")
 def hi(chat, message, args, sender):
     chat.SendMessage("Hi {}!".format(sender.FullName))

@@ -1,20 +1,19 @@
-from JakeBot import Command
+from plugin import command
 import tweepy
-import JakeBot
+import config
 
 
 def get_api():
-    consumer_key = JakeBot.conf.get_value("twitter_api-key")
-    consumer_secret = JakeBot.conf.get_value("twitter_api-key-secret")
-    access_token_key = JakeBot.conf.get_value("twitter_access")
-    access_token_secret = JakeBot.conf.get_value("twitter_access-secret")
+    consumer_key = config.get("twitter_api_key")
+    consumer_secret = config.get("twitter_api_secret")
+    access_token_key = config.get("twitter_access_key")
+    access_token_secret = config.get("twitter_access_secret")
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token_key, access_token_secret)
-
     return tweepy.API(auth)
 
 
-@Command(name="tweet", help="Twitter command")
+@command(name="tweet", help="Twitter command")
 def tweets(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Provide a user")
@@ -27,21 +26,23 @@ def tweets(chat, message, args, sender):
     if num > 300:
         chat.SendMessage("Unable to process")
         return
-
-    print "heree!!!!!!!!!"
     api = get_api()
-    user = api.get_user(args[0])
-    if not user:
-        chat.SendMessage("User not found")
-        return
+    try:
+        user = api.get_user(args[0])
+        if not user:
+            chat.SendMessage("User not found")
+            return
 
-    user_timeline = api.user_timeline(id=user.id, count=num + 1)
+        user_timeline = api.user_timeline(id=user.id, count=num + 1)
+    except tweepy.error.TweepError:
+        chat.SendMessage("Unable to find tweet.")
+        return
 
     if not user_timeline:
         chat.SendMessage("Timeline not found")
         return
 
-    chat.SendMessage(user_timeline[num].text)
+    chat.SendMessage('@{}: {}'.format(user.screen_name, user_timeline[num].text))
 
 
 

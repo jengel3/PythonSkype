@@ -1,9 +1,9 @@
 import random
 
-from JakeBot import Command
+from plugin import command
 
 
-@Command(name="choose", help="Choose a random item out of the provided choices.")
+@command(name="choose", help="Choose a random item out of the provided choices.")
 def choose(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Specify at least one option.")

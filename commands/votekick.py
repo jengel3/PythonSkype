@@ -1,11 +1,11 @@
-from JakeBot import Command
+from plugin import command
 from time import sleep
 import thread
 
 vote_kicks = {}  # Chat to Kick
 
 
-@Command(name="votekick", help="Vote to kick a player")
+@command(name="votekick", help="Vote to kick a player")
 def hi(chat, message, args, sender):
     """
 
