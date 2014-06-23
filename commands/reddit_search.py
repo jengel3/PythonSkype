@@ -1,6 +1,7 @@
-from plugin import event
-from plugin import command
 import praw
+
+from util.plugin import event
+from util.plugin import command
 
 
 def get_reddit():

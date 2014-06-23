@@ -1,11 +1,12 @@
-import logger
 import inspect
-import utils
 import traceback
 import threading
 import Queue
-import permissions
 import re
+
+from util import logger, string_utils
+import permissions
+
 
 func_handlers = {}
 commands = {}  # Name to function
@@ -130,8 +131,8 @@ def dispatch(message, status):
 
         # Log command
         base = 'Received command \'{}\''.format(cmd)
-        if len(utils.get_args(args)) > 0:
-            args = ' with arguments: {}'.format(utils.get_args_string(args))
+        if len(string_utils.get_args(args)) > 0:
+            args = ' with arguments: {}'.format(string_utils.get_args_string(args))
             base = base + args
         logger.log(base)
         # Execute command
@@ -146,10 +147,10 @@ def run(func, args):
     command_args = message.Body.split()
     t = args['type']
     if t == 'command':
-        func(message.Chat, message.Body, utils.get_args(command_args), message.Sender)
+        func(message.Chat, message.Body, string_utils.get_args(command_args), message.Sender)
     elif t == 'event':
         found = extra['found']
-        func(message.Chat, message.Body, utils.get_args(command_args), message.Sender, found)
+        func(message.Chat, message.Body, string_utils.get_args(command_args), message.Sender, found)
 
 
 class Handler(object):

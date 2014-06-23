@@ -1,6 +1,6 @@
 import random
 
-from plugin import command
+from util.plugin import command
 
 
 @command(name="choose", help="Choose a random item out of the provided choices.")

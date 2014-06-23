@@ -1,5 +1,7 @@
-from plugin import command
 import random
+
+from util.plugin import command
+
 
 responses = ("The answer is no.", "Uh, no.", "I Guess so.", "Yeah sure whatever.",
              "There comes a time when a man says no.", "Yeah, congratulations.",

@@ -1,5 +1,5 @@
-from plugin import command
-import plugin
+from util import plugin
+from util.plugin import command
 
 
 @command(name="help", aliases="commands", help="Display a list of commands")

@@ -1,5 +1,6 @@
-from plugin import command
 import tweepy
+
+from util.plugin import command
 import config
 
 

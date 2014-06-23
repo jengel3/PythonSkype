@@ -1,6 +1,8 @@
-from plugin import command
 import random
 import re
+
+from util.plugin import command
+
 
 full = "    0000000000000\n0           0\n0           1\n0          1 1\n0           1\n0          324\n0         " \
        "3 2 4\n0        3  2  4\n0          5 6\n0         5   6\n0        5     6\n0       5       6\n0\n0\n0"

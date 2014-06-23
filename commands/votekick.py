@@ -1,6 +1,8 @@
-from plugin import command
 from time import sleep
 import thread
+
+from util.plugin import command
+
 
 vote_kicks = {}  # Chat to Kick
 

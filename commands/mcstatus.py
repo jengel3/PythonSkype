@@ -1,7 +1,8 @@
 import urllib
 import json
 
-from plugin import command
+from util.plugin import command
+
 
 check = u'\u2713'
 nope = u'\u2717'

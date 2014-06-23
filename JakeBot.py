@@ -1,9 +1,12 @@
-import Skype4Py
 import glob
 import os
 import traceback
 import sys
-import plugin
+
+import Skype4Py
+
+from util import plugin
+
 
 sys.path += ['commands']
 

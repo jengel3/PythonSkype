@@ -1,4 +1,4 @@
-from plugin import command
+from util.plugin import command
 
 
 @command(name="analyze", help="Find inactive users", permission="command.analyze")

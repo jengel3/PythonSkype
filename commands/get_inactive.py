@@ -1,6 +1,7 @@
-from plugin import command
 import datetime
 import calendar
+
+from util.plugin import command
 
 
 @command(name="inactive", help="Find inactive users", permission="command.inactive")
