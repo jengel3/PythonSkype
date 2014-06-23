@@ -1,7 +1,7 @@
 import tweepy
 
+from bot import config
 from util.plugin import command
-import config
 
 
 def get_api():

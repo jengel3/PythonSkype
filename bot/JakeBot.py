@@ -27,7 +27,7 @@ def reload_plugins():
             continue
 
 
-if __name__ == "__main__":
+def main():
     print("Starting SkypeBot %s" % version)
 
     skype = Skype4Py.Skype()
@@ -38,3 +38,7 @@ if __name__ == "__main__":
     skype.OnMessageStatus = plugin.dispatch
 
     print("Commands have been loaded and the bot is running.")
+
+
+if __name__ == "__main__":
+    main()
