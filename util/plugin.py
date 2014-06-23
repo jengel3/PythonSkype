@@ -104,6 +104,7 @@ def dispatch(message, status):
     :type message: ChatMessage
     """
     if status == 'SENT' or status == 'RECEIVED':
+        logger.log_message(message)
         for e in events:
             func = events[e]
             regex = event_regex[e]
@@ -130,9 +131,9 @@ def dispatch(message, status):
                 return
 
         # Log command
-        base = 'Received command \'{}\''.format(cmd)
+        base = u'Received command \'{}\''.format(cmd)
         if len(string_utils.get_args(args)) > 0:
-            args = ' with arguments: {}'.format(string_utils.get_args_string(args))
+            args = u' with arguments: {}'.format(string_utils.get_args_string(args))
             base = base + args
         logger.log(base)
         # Execute command

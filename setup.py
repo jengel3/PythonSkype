@@ -7,9 +7,9 @@ setup(name="skype-bot",
       author="Jake0oo0",
       author_email="jake0oo0andminecraft@gmail.com",
       license="BSD",
-      packages=['commands', 'util', 'bot'],
+      packages=['commands', 'util'],
       entry_points={
-          "console_scripts": ["skype=bot.JakeBot:main"]
+          "console_scripts": ["skype=JakeBot:main"]
       },
       classifiers=["Operating System :: POSIX",
                    "Operating System :: Microsoft :: Windows",

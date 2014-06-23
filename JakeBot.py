@@ -9,10 +9,7 @@ from util import plugin
 
 
 sys.path += ['commands']
-
-
 version = 1.0  # Version number
-source = 'https://github.com/Jake0oo0/PythonSkype'  # Source link
 
 
 def reload_plugins():
@@ -27,9 +24,8 @@ def reload_plugins():
             continue
 
 
-def main():
+if __name__ == "__main__":
     print("Starting SkypeBot %s" % version)
-
     skype = Skype4Py.Skype()
     if not skype.Client.IsRunning:
         skype.Client.Start()
@@ -39,6 +35,3 @@ def main():
 
     print("Commands have been loaded and the bot is running.")
 
-
-if __name__ == "__main__":
-    main()

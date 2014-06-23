@@ -1,3 +1,6 @@
 *.pyc
 config.conf
 *.txt
+dist/
+skype_bot.egg-info/
+build/

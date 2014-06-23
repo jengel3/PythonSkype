@@ -1,6 +1,6 @@
 import tweepy
 
-from bot import config
+import config
 from util.plugin import command
 
 
