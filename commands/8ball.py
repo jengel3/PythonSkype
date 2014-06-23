@@ -1,15 +1,9 @@
 import random
 
 from util.plugin import command
+from util.data_utils import get_lines
 
-
-responses = ("The answer is no.", "Uh, no.", "I Guess so.", "Yeah sure whatever.",
-             "There comes a time when a man says no.", "Yeah, congratulations.",
-             "Well, if I said yes, it would be a lie.", "Of Course.", "Yes.", "No.", "Without a doubt.",
-             "My sources say no.", "As I see it, yes.", "You may rely on it.", "Not a chance.",
-             "Outlook not so good.", "It is decidedly so.", "Was there ever any doubt?",
-             "No, are you high?", "Very doubtful. ", "Yes - definitely.", "It is certain.",
-             "Outlook good.", "Don't count on it.")
+responses = get_lines('8ball.txt')
 
 
 @command(name="8ball", help="Ask the 8ball of its opinion!")
