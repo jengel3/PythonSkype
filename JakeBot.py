@@ -2,7 +2,7 @@ import glob
 import os
 import traceback
 import sys
-
+from util.permissions import load_permissions
 import Skype4Py
 
 from util import plugin
@@ -26,6 +26,7 @@ def reload_plugins():
 
 if __name__ == "__main__":
     print("Starting SkypeBot %s" % version)
+    load_permissions()
     skype = Skype4Py.Skype()
     if not skype.Client.IsRunning:
         skype.Client.Start()

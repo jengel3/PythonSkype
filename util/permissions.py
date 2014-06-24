@@ -1,3 +1,5 @@
+import config
+
 user_permissions = {}  # Skype instance
 
 
@@ -50,6 +52,14 @@ def remove_permission(user, permission):
     user_permissions.update({user: perm_string})
 
 
-add_permission("jake0oo0", 'command.inactive')
-add_permission('jake0oo0', 'command.analyze')
-add_permission('jake0oo0', 'command.poll')
+def load_permissions():
+    print "Loading permissions.."
+    conf = config.config()
+    users = conf.get('users', [])
+    for user in users:
+        permissions = users[user]['permissions']
+        if not permissions:
+            continue
+        for permission in permissions:
+            add_permission(user, permission)
+    print "Loaded permissions for {} users.".format(len(users))

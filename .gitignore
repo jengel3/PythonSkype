@@ -1,5 +1,5 @@
 *.pyc
-config.conf
+config.json
 *.txt
 dist/
 skype_bot.egg-info/

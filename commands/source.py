@@ -3,4 +3,5 @@ import config
 
 @command(name='source', help="Display a link to the bot's source.")
 def source(chat, message, args, sender):
-    chat.SendMessage(config.get('source'))
+    conf = config.config()
+    chat.SendMessage(conf.get('source'))
