@@ -118,7 +118,7 @@ def dispatch(message, status):
             return
         # Get args and command from message
         args = message.Body.split()
-        cmd = args[0].replace('!', "")
+        cmd = args[0].replace('!', "").lower()
         # Check for valid command
         if not cmd in commands:
             message.Chat.SendMessage("Command not found!")

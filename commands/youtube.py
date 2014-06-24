@@ -26,6 +26,6 @@ def get_video_info(video_id):
     likes = entry['yt$rating']['numLikes']
     dislikes = entry['yt$rating']['numDislikes']
     title = entry['title']['$t']
-    final_message = "{} - by: {} - Views: {} Likes: {} Dislikes: {}".format(title, author, views, likes, dislikes)
+    final_message = u"{} - by: {} - Views: {} Likes: {} Dislikes: {}".format(title, author, views, likes, dislikes)
     return final_message
 
