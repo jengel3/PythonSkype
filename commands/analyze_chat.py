@@ -1,7 +1,7 @@
 from util.plugin import command
 
 
-@command(name="analyze", help="Find inactive users", permission="command.analyze")
+@command(name="analyze", help="Analyze and get statistics about a chat.", permission="command.analyze")
 def inactive_search(chat, message, args, sender):
     if len(args) > 0:
         chat.SendMessage("No arguments required.")

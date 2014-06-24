@@ -52,3 +52,4 @@ def remove_permission(user, permission):
 
 add_permission("jake0oo0", 'command.inactive')
 add_permission('jake0oo0', 'command.analyze')
+add_permission('jake0oo0', 'command.poll')

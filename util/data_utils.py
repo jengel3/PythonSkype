@@ -3,7 +3,6 @@ from os import path
 
 def get_lines(file_name):
     file_path = path.join("data", file_name)
-    print path.abspath(file_path)
     if not path.isfile(file_path):
         return None
     lines = []
