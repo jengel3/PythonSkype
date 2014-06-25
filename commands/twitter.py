@@ -1,10 +1,12 @@
 import tweepy
 
 from util.plugin import command
+from util.plugin import event
 from util.twitter_api import get_api
 from util.twitter_api import get_auth
 import config
 import Skype4Py
+import re
 
 streams = {}
 
@@ -38,7 +40,11 @@ def tweets(chat, message, args, sender):
         chat.SendMessage("Timeline not found")
         return
 
-    chat.SendMessage('@{}: {}'.format(user.screen_name, user_timeline[num].text))
+    chat.SendMessage(format_status(user_timeline[num]))
+
+
+def format_status(status):
+    return '@{}: {}'.format(status.user.screen_name, status.text)
 
 
 @command(name="listen", help="Twitter live data stream")
@@ -138,6 +144,20 @@ class StreamWatcherListener(tweepy.StreamListener):
 
     def on_timeout(self):
         print 'Streaming API timed out...'
+
+
+@event(name='twitter_url', regex=r"(?:(?:www.twitter.com|twitter.com)/(?:[-_a-zA-Z0-9]+)/status/)([0-9]+)")
+def twitter_url(chat, message, args, sender, found):
+    match = re.search("(?:(?:www.twitter.com|twitter.com)/(?:[-_a-zA-Z0-9]+)/status/)([0-9]+)", message)
+    tweet_id = match.group(1)
+    api = get_api()
+    try:
+        tweet = api.get_status(tweet_id)
+    except tweepy.error.TweepError:
+        print("Failed to retrieve tweet data.")
+        return
+
+    chat.SendMessage(format_status(tweet))
 
 
 confi = config.config()
