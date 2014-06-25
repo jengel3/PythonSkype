@@ -7,7 +7,6 @@ import Skype4Py
 
 from util import plugin
 
-
 sys.path += ['commands']
 version = 1.0  # Version number
 
@@ -22,7 +21,6 @@ def reload_plugins():
         except Exception:
             traceback.print_exc()
             continue
-
 
 if __name__ == "__main__":
     print("Starting SkypeBot %s" % version)

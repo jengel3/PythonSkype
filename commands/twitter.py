@@ -1,8 +1,10 @@
 import tweepy
 
 from util.plugin import command
-from util.twitter import get_api
-from util.twitter import get_auth
+from util.twitter_api import get_api
+from util.twitter_api import get_auth
+import config
+import Skype4Py
 
 streams = {}
 
@@ -49,6 +51,14 @@ def twitter_listen(chat, message, args, sender):
     if not user:
         chat.SendMessage("User not found")
         return
+    conf = config.config()
+    listens = conf.get('twitter_listens', {})
+    if args[0] in listens:
+        user_json = listens[args[0]]
+        chats = user_json['chats']
+        if chat.Name in chats:
+            chat.SendMessage("This chat is already listening to that user's tweets!")
+            return
 
     auth = get_auth()
     s = StreamWatcherListener()
@@ -62,7 +72,47 @@ def twitter_listen(chat, message, args, sender):
 
     streams.update({chat: args[0]})
     stream.filter(follow=userids, async=True)
-    print "Updated with new stream for " + args[0]
+    chat.SendMessage("Updated with new stream for {}".format(args[0]))
+    args[0] = args[0].lower()
+    if args[0] in listens:
+        chats = listens[args[0]]['chats']
+        chats.append(chat.Name)
+        listens[args[0]]['chats'] = chats
+    else:
+        chats = [chat.Name]
+        listens.update({args[0]: {}})
+        listens[args[0]]['chats'] = chats
+        listens[args[0]]['id'] = userids[0]
+
+    config.save(conf)
+
+
+def get_chat_by_name(name):
+    skype = Skype4Py.Skype()
+    if not skype.Client.IsRunning:
+        skype.Client.Start()
+    skype.Attach()
+    for chat_id in skype.Chats:
+        if chat_id.Name == name:
+            return chat_id
+
+
+def load_streams():
+    conf = config.config()
+    users = conf.get("twitter_listens", {})
+    for user in users:
+        user_json = users[user]
+        name = user_json['id']
+        chats = user_json['chats']
+        for chat_id in chats:
+            chat = get_chat_by_name(chat_id)
+            auth = get_auth()
+            s = StreamWatcherListener()
+            stream = tweepy.Stream(auth, s, timeout=None)
+            userids = [name]
+
+            streams.update({chat: user})
+            stream.filter(follow=userids, async=True)
 
 
 class StreamWatcherListener(tweepy.StreamListener):
@@ -87,3 +137,7 @@ class StreamWatcherListener(tweepy.StreamListener):
         print 'Streaming API timed out...'
 
 
+conf = config.config()
+env = conf.get("env", "production")
+if env != "dev":
+    load_streams()

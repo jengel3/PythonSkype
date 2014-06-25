@@ -15,7 +15,7 @@ current_word = None
 last_messages = []
 
 
-@command(name="hangman", aliases='hm', permission="command.hangman", help="Play Hangman in Skype!")
+@command(name="hangman", aliases='hm', help="Play Hangman in Skype!")
 def hangman(chat, message, args, sender):
     if len(args) != 1 or len(args[0]) > 1 or not re.match("^[a-z]*$", args[0]):
         last_messages.append(chat.SendMessage('%s: You must provide a single letter as an argument.' % sender.Handle))

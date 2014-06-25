@@ -1,3 +1,7 @@
+import random
+import string
+
+
 def get_args_string(args):
     argstring = ""
     argiterator = iter(args)
@@ -19,3 +23,7 @@ def get_arg(num, args):
         next(argiterator)
         num -= 1
     return list(argiterator)
+
+
+def get_random_string(length):
+    ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(length))

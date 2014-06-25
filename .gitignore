@@ -1,6 +1,15 @@
+#Python files
 *.pyc
+
+#Sensitive Config
 config.json
-*.txt
+
+#Setup files
 dist/
 skype_bot.egg-info/
 build/
+
+#Output files
+log.txt
+messages.txt
+output/

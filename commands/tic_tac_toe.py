@@ -1,15 +1,20 @@
 from util.plugin import command
+from util.string_utils import get_random_string
 
-
-render = "   1 2 3 \nA |{}|{}|{}|\n----------\nB |{}|{}|{}|\n----------\nC |{}|{}|{}|"
+render = "A | {} | {} | {} |\n" \
+         "   --------------\n" \
+         "B | {} | {} | {} |\n" \
+         "   --------------\n" \
+         "C | {} | {} | {} |\n" \
+         "     1    2    3 " \
 
 # !ttt start josh0309
 # !ttt move a3
 # !ttt quit
-games = []
+games = {}
 
 
-@command(name='ttt')
+@command(name='ttt', help="Play Tic tac toe with a friend! Start a game with !ttt start <user>")
 def tic_tac_toe(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Provide an argument.")
@@ -19,10 +24,15 @@ def tic_tac_toe(chat, message, args, sender):
             chat.SendMessage("Provide a partner.")
             return
         game = TicTacToe(chat, sender.Handle, args[1])
-        games.append(game)
-        chat.SendMessage("Started game.")
+        games.update({game.id: game})
+        chat.SendMessage("Started game.\n{}, use !ttt move <column|row> to move. For example: !ttt move a3"
+                         .format(game.move))
     elif args[0] == "end":
-        get_game_by_sender(chat, sender.Handle).end_game()
+        game = get_game_by_sender(chat, sender.Handle)
+        if game is None:
+            chat.SendMessage("No game exists.")
+            return
+        games.pop(game.id)
     elif args[0] == "move":
         if len(args) != 2:
             chat.SendMessage("Provide a column and row.")
@@ -30,32 +40,34 @@ def tic_tac_toe(chat, message, args, sender):
         if len(args[1]) != 2:
             chat.SendMessage("Provide a row and column in a single argument. eg. e3")
             return
-        move = args[1]
+        move = args[1].lower()
         game = get_game_by_sender(chat, sender.Handle)
         if game is None:
             chat.SendMessage("You do not have a running game.")
             return
-        game.make_move(sender.Handle, move[1], move[0])
+        remove = game.make_move(sender.Handle, move[1], move[0])
+        if remove:
+            games.pop(game.id)
 
 
 def get_game_by_sender(chat, sender):
-    for game in games:
+    for game in games.values():
         if (game.user == sender or game.partner == sender) and chat == game.chat:
             return game
 
 
 class TicTacToe:
-    rows = ['a', 'b', 'c']
-    columns = ['1', '2', '3']
-    current_tiles = [-1, -1, -1,
-                     -1, -1, -1,
-                     -1, -1, -1]
-
     def __init__(self, chat, user, partner):
         self.chat = chat
         self.user = user
         self.partner = partner
         self.move = partner
+        self.id = get_random_string(6)
+        self.rows = ['a', 'b', 'c']
+        self.columns = ['1', '2', '3']
+        self.current_tiles = [-1, -1, -1,  # -1 = Space
+                              -1, -1, -1,  # 0 = O
+                              -1, -1, -1]  # 1 = X
 
     def make_move(self, handle, column, row):
         if handle != self.user and handle != self.partner:
@@ -81,13 +93,11 @@ class TicTacToe:
         self.chat.SendMessage(temp_render)
         if -1 not in self.current_tiles:
             self.chat.SendMessage("All tiles filled, the game is a tie!")
-            self.end_game()
-            return
+            return True
         winner = self.get_winner()
         if winner is not None:
-            self.chat.SendMessage("The letter {} wins!".format(self.get_type_mark(winner)))
-            self.end_game()
-            return
+            self.chat.SendMessage("{} wins!".format(self.get_user_from_mark(winner)))
+            return True
         if handle == self.partner:
             self.move = self.user
         elif handle == self.user:
@@ -109,8 +119,11 @@ class TicTacToe:
         else:
             return "O"
 
-    def end_game(self):
-        games.remove(self)
+    def get_user_from_mark(self, mark):
+        if mark == "X":
+            return self.user
+        else:
+            return self.partner
 
     def get_num(self, handle):
         if handle == self.user:
@@ -130,19 +143,24 @@ class TicTacToe:
 
     def get_winner(self):
         counter = 0
-        for num in self.current_tiles:
-            if num == 0 and counter >= 0:
-                counter += 1
-                if counter == 4:
-                    return num
-            if num == 0 and counter < 0:
-                counter = 0
-            if num == 1 and counter <= 0:
-                counter -= 1
-                if counter == -4:
-                    return num
-            if num == 1 and counter > 0:
-                counter = 0
-            if num == -1:
-                counter == 0
+        row_one = [self.current_tiles[0], self.current_tiles[1], self.current_tiles[2]]
+        row_two = [self.current_tiles[3], self.current_tiles[4], self.current_tiles[5]]
+        row_three = [self.current_tiles[6], self.current_tiles[7], self.current_tiles[8]]
+        rows = [row_one, row_two, row_three]
+        for row in rows:
+            for num in row:
+                if num == 0 and counter >= 0:
+                    counter += 1
+                    if counter == 3:
+                        return num
+                if num == 0 and counter < 0:
+                    counter = 0
+                if num == 1 and counter <= 0:
+                    counter -= 1
+                    if counter == -3:
+                        return num
+                if num == 1 and counter > 0:
+                    counter = 0
+                if num == -1:
+                    counter == 0
         return None
