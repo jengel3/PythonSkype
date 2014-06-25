@@ -16,7 +16,6 @@ def get_results(query, query_type):
     for result in results:
         link = parser.unescape(result['url'])
         title = parser.unescape(result['titleNoFormatting'])
-        print link, title
         links.update({link: title})
     try:
         count = data['responseData']['cursor']['resultCount']
