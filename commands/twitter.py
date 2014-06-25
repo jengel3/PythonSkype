@@ -60,18 +60,14 @@ def twitter_listen(chat, message, args, sender):
             chat.SendMessage("This chat is already listening to that user's tweets!")
             return
 
-    auth = get_auth()
-    s = StreamWatcherListener()
-    stream = tweepy.Stream(auth, s, timeout=None)
     username_list = [args[0]]
     userids = []
 
     for username in username_list:
-        user = tweepy.API(auth).get_user(screen_name=username)
+        user = api.get_user(screen_name=username)
         userids.append(str(user.id))
 
     streams.update({chat: args[0]})
-    stream.filter(follow=userids, async=True)
     chat.SendMessage("Updated with new stream for {}".format(args[0]))
     args[0] = args[0].lower()
     if args[0] in listens:
@@ -85,6 +81,7 @@ def twitter_listen(chat, message, args, sender):
         listens[args[0]]['id'] = userids[0]
 
     config.save(conf)
+    load_streams()
 
 
 def get_chat_by_name(name):
@@ -98,21 +95,23 @@ def get_chat_by_name(name):
 
 
 def load_streams():
+    streams.clear()
     conf = config.config()
     users = conf.get("twitter_listens", {})
+    userids = []
     for user in users:
         user_json = users[user]
         name = user_json['id']
         chats = user_json['chats']
+        userids.append(name)
         for chat_id in chats:
             chat = get_chat_by_name(chat_id)
-            auth = get_auth()
-            s = StreamWatcherListener()
-            stream = tweepy.Stream(auth, s, timeout=None)
-            userids = [name]
-
             streams.update({chat: user})
-            stream.filter(follow=userids, async=True)
+
+    auth = get_auth()
+    s = StreamWatcherListener()
+    stream = tweepy.Stream(auth, s, timeout=None)
+    stream.filter(follow=userids, async=True)
 
 
 class StreamWatcherListener(tweepy.StreamListener):
@@ -123,21 +122,25 @@ class StreamWatcherListener(tweepy.StreamListener):
                 if user.lower() == status.author.screen_name.lower():
                     chats_to_send.append(chat)
             for chat in chats_to_send:
-                chat.SendMessage('#TWEET UPDATE FOR @{}#\n{}'.format(status.author.screen_name, status.text))
+                chat.SendMessage(u'#TWEET UPDATE FOR @{}#\n{}'.format(status.author.screen_name, status.text))
         except:
-            # Catch any unicode errors while printing to console
-            # and just ignore them to avoid breaking application.
             pass
 
     def on_error(self, status_code):
+        from time import sleep
         print 'An error has occurred! Status code = %s' % status_code
+        if str(status_code) == "420":
+            print 'Waiting 3 seconds before restarting streams.'
+            sleep(3000)
+            load_streams()
+            return False
         return True  # keep stream alive
 
     def on_timeout(self):
         print 'Streaming API timed out...'
 
 
-conf = config.config()
-env = conf.get("env", "production")
+confi = config.config()
+env = confi.get("env", "production")
 if env != "dev":
     load_streams()
