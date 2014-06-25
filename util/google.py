@@ -18,5 +18,8 @@ def get_results(query, query_type):
         title = parser.unescape(result['titleNoFormatting'])
         print link, title
         links.update({link: title})
-    count = data['responseData']['cursor']['resultCount']
+    try:
+        count = data['responseData']['cursor']['resultCount']
+    except KeyError:
+        count = 0
     return links, count
