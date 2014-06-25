@@ -100,7 +100,7 @@ def event(arg=None, **kwargs):
 
 
 def get_minute_ago():
-    datetime.datetime.now() - datetime.timedelta(minutes=1)
+    return datetime.datetime.now() - datetime.timedelta(minutes=1)
 
 
 def dispatch(message, status):
