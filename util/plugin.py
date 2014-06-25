@@ -3,6 +3,7 @@ import traceback
 import threading
 import Queue
 import re
+import datetime
 
 from util import logger, string_utils
 import permissions
@@ -98,12 +99,19 @@ def event(arg=None, **kwargs):
         return wrapper(arg)
 
 
+def get_minute_ago():
+    datetime.datetime.now() - datetime.timedelta(minutes=1)
+
+
 def dispatch(message, status):
     """
 
     :type message: ChatMessage
     """
     if status == 'SENT' or status == 'RECEIVED':
+        msg_time = message.Datetime
+        if msg_time < get_minute_ago():
+            return
         logger.log_message(message)
         for e in events:
             func = events[e]
