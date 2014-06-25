@@ -18,4 +18,4 @@ def google_command(chat, message, args, sender):
         if temp == 2:
             break
         temp += 1
-    chat.SendMessage(sb)
+    chat.SendMessage(sb)from
