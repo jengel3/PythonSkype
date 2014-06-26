@@ -18,7 +18,7 @@ def poll_command(chat, message, args, sender):
     if len(split) != 2:
         chat.SendMessage("Provide a message with the format '<question> - <choiceA>, <choiceB>, <etc>")
         return
-    question = split[0]
+    question = split[0].replace('!poll ', '')
     options = split[1]
     final_choices = []
     for option in options.split(', '):
@@ -54,7 +54,7 @@ class Poll:
         self.start_poll()
 
     def start_poll(self):
-        self.chat.SendMessage("{} has started a poll with the question '{}'. The choices are {}. "
+        self.chat.SendMessage("{} has started a poll with the question '{}'. The choices are {} "
                               "Use !vote <letter> to cast your vote.".format(self.poller, self.question,
                                                                              self.get_formatted_choices()))
 
