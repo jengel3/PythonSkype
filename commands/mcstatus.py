@@ -14,6 +14,7 @@ nope = u'\u2717'
 LISTEN_API = 'http://xpaw.ru/mcstatus/status.json'
 
 listeners = []
+previous_statuses = {}
 
 
 @command(name="mcstatus", help="Print Minecraft status")
@@ -87,7 +88,7 @@ def load_listeners():
 
 
 def start_listener():
-    threading.Thread(target=listen)
+    threading.Thread(target=listen, name='mcstatus-listener')
 
 
 def get_chat_by_name(name):
@@ -100,11 +101,11 @@ def get_chat_by_name(name):
             return chat_id
 
 
-previous_statuses = {}
-
-
 def listen():
     while True:
+        if len(previous_statuses) == 0:
+            previous_statuses == get_statuses()
+            continue
         new_statuses = get_statuses()
         changed = []
         for service, status in new_statuses.items():
@@ -114,12 +115,16 @@ def listen():
             else:
                 changed.append(service)
         if len(changed) == 0:
-            return
+            continue
         else:
             sb = 'The following services have changed status: \n'
             for serv in changed:
-                sb += '{} is now {}\n'.format(serv, new_statuses['serv'])
+                sb += '{} is now {}\n'.format(serv, new_statuses[serv])
             for chat_id in listeners:
                 chat = get_chat_by_name(chat_id)
                 chat.SendMessage(sb)
         sleep(60)
+
+
+load_listeners()
+start_listener()
