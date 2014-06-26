@@ -2,7 +2,7 @@ from util.plugin import command
 import util.permissions as permissions
 
 
-@command(name="perms", help="Permissions management command", aliases="permissions, perm",
+@command(name="permissions", help="Permissions management command", aliases="perms, perm, permission",
          permission="command.permissions")
 def perms(chat, message, args, sender):
     if len(args) == 0:

@@ -16,6 +16,8 @@ def get_permissions(user):
 
 
 def has_permission(user, permission):
+    if is_operator(user):
+        return True
     perms = get_permissions(user)
     if permission in perms:
         return True
