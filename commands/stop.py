@@ -8,5 +8,4 @@ def stop(chat, message, args, sender):
     if os.name == 'nt':
         os.system('taskkill /F /IM python.exe /T')
         return
-    pid = os.getpid()
-    os.system('killall {}'.format(pid))
+    os.system('killall python')
