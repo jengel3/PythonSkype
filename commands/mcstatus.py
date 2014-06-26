@@ -29,6 +29,7 @@ def choose(chat, message, args, sender):
             config_operators.append(chat.Name)
             conf['mc_listens'] = config_operators
             config.save(conf)
+            return
         elif args[0].lower() == '--unlisten':
             conf = config.config()
             config_operators = conf.get('mc_listens', [])
@@ -38,6 +39,7 @@ def choose(chat, message, args, sender):
             config_operators.remove(chat.Name)
             conf['mc_listens'] = config_operators
             config.save(conf)
+            return
         else:
             service = args[0]
             if service in get_statuses():
