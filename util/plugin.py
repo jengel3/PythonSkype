@@ -180,7 +180,6 @@ class Handler(object):
                 run(self.func, args)
             except:
                 import traceback
-
                 traceback.print_exc()
 
     def stop(self):

@@ -45,7 +45,7 @@ def op_command(chat, message, args, sender):
     if valid:
         chat.SendMessage("Successfully made {} operator.".format(operator))
     else:
-        chat.SendMessage("Unable to make {} operator.")
+        chat.SendMessage("Unable to make {} operator.".format(operator))
 
 
 @command(name='deop', help='Remove a user\' operator status.')
@@ -58,4 +58,4 @@ def deop_command(chat, message, args, sender):
     if valid:
         chat.SendMessage("Successfully removed {} as operator.".format(operator))
     else:
-        chat.SendMessage("Unable to remove {} as operator.")
+        chat.SendMessage("Unable to remove {} as operator.".format(operator))
