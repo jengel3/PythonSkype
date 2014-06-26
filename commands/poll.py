@@ -1,4 +1,5 @@
 from util.plugin import command
+import collections
 
 polls = {}  # Chat to poll
 
@@ -54,7 +55,7 @@ class Poll:
         self.start_poll()
 
     def start_poll(self):
-        self.chat.SendMessage("{} has started a poll with the question '{}'. The choices are {} "
+        self.chat.SendMessage("{} has started a poll with the question '{}'. The choices are:\n {} "
                               "Use !vote <letter> to cast your vote.".format(self.poller, self.question,
                                                                              self.get_formatted_choices()))
 
@@ -67,11 +68,11 @@ class Poll:
         for choice, count in self.count_votes().items():
             formatted_message += "{}: {} votes\n".format(self.letter_choices[choice], str(count))
             shown_choices.append(self.letter_choices[choice])
-            for option in self.options:
-                if option in shown_choices:
-                    continue
-                shown_choices.append(option)
-                formatted_message += "{}: {} votes\n".format(option, str(0))
+        for option in self.options:
+            if option in shown_choices:
+                continue
+            shown_choices.append(option)
+            formatted_message += "{}: {} votes\n".format(option, str(0))
         self.chat.SendMessage(formatted_message)
 
     def vote(self, voter, letter):
@@ -98,7 +99,7 @@ class Poll:
         return counts
 
     def get_choice_list(self):
-        choices = {}
+        choices = collections.OrderedDict()
         for choice in self.options:
             choice_letter = 'a'
             for letter in get_alphabet():
