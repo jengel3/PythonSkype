@@ -22,6 +22,11 @@ def reload_plugins():
             traceback.print_exc()
             continue
 
+
+def add_contact(user):
+    user.IsAuthorized = True
+
+
 if __name__ == "__main__":
     print("Starting SkypeBot %s" % version)
     load_permissions()
@@ -31,6 +36,7 @@ if __name__ == "__main__":
     skype.Attach()
     reload_plugins()
     skype.OnMessageStatus = plugin.dispatch
-
+    skype.OnUserAuthorizationRequestReceived = add_contact
     print("Commands have been loaded and the bot is running.")
+
 
