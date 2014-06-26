@@ -11,8 +11,6 @@ from util.plugin import command
 check = u'\u2713'
 nope = u'\u2717'
 
-LISTEN_API = 'http://xpaw.ru/mcstatus/status.json'
-
 listeners = []
 previous_statuses = {}
 
@@ -105,16 +103,19 @@ def listen():
     while True:
         if len(previous_statuses) == 0:
             previous_statuses == get_statuses()
+            sleep(60)
             continue
         new_statuses = get_statuses()
         changed = []
         for service, status in new_statuses.items():
             old_status = previous_statuses[service]
             if status == old_status:
+                sleep(60)
                 continue
             else:
                 changed.append(service)
         if len(changed) == 0:
+            sleep(60)
             continue
         else:
             sb = 'The following services have changed status: \n'
