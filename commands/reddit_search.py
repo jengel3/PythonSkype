@@ -20,7 +20,7 @@ def post(chat, message, args, sender, found):
         pass
 
 
-@command(name="reddit", help="Display information about a Reddit user.")
+@command(name="reddit", help="Display information about a Reddit user.", aliases='redditor')
 def reddit_user(chat, message, args, sender):
     if len(args) != 1:
         chat.SendMessage("Provide a redditor to gather information from.")
@@ -40,4 +40,27 @@ def reddit_user(chat, message, args, sender):
     user_name = redditor.name
     page_link = redditor._url
     msg = '{} - Comment Karma: {} - Link Karma: {} - {}'.format(user_name, comment_karma, link_karma, page_link)
+    chat.SendMessage(msg)
+
+
+@command(name='subreddit', help='Get information about a subreddit')
+def reddit_sub(chat, message, args, sender):
+    if len(args) != 1:
+        chat.SendMessage("Provide a subreddit to get information about.")
+        return
+    sub = args[0]
+    r = get_reddit()
+    try:
+        subreddit = r.get_subreddit(subreddit_name=sub, fetch=True)
+    except praw.requests.exceptions.HTTPError:
+        chat.SendMessage("User not found.")
+        return
+    if not subreddit:
+        chat.SendMessage("User not found.")
+        return
+    url = subreddit._url
+    subs = subreddit.subscribers
+    desc = subreddit.public_description
+    display = subreddit.display_name
+    msg = '{} - {} | Subscribers: {} - {}'.format(display, desc, subs, url)
     chat.SendMessage(msg)
