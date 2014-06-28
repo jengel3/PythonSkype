@@ -62,7 +62,7 @@ def twitter_listen(chat, message, args, sender):
     conf = config.config()
     listens = conf.get('twitter_listens', None)
     if listens is None:
-        conf['listens'] = {}
+        conf['twitter_listens'] = {}
         listens = {}
     if args[0] in listens:
         user_json = listens[args[0]]
@@ -83,13 +83,13 @@ def twitter_listen(chat, message, args, sender):
     if args[0] in listens:
         chats = listens[args[0]]['chats']
         chats.append(chat.Name)
-        conf['listens'][args[0]]['chats'] = chats
+        conf['twitter_listens'][args[0]]['chats'] = chats
     else:
         chats = [chat.Name]
-        conf['listens'][args[0]] = {}
+        conf['twitter_listens'][args[0]] = {}
         listens.update({args[0]: {}})
-        conf['listens'][args[0]]['chats'] = chats
-        conf['listens'][args[0]]['id'] = userids[0]
+        conf['twitter_listens'][args[0]]['chats'] = chats
+        conf['twitter_listens'][args[0]]['id'] = userids[0]
 
     config.save(conf)
     load_streams()
@@ -125,6 +125,7 @@ def load_streams():
     s = StreamWatcherListener()
     stream = tweepy.Stream(auth, s, timeout=None)
     stream.filter(follow=userids, async=True)
+    print "Loaded {} Twitter streams.".format(len(userids))
 
 
 class StreamWatcherListener(tweepy.StreamListener):
