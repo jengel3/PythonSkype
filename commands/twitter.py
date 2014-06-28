@@ -146,8 +146,6 @@ class StreamWatcherListener(tweepy.StreamListener):
         if str(status_code) == "420":
             print 'Waiting 3 seconds before restarting streams.'
             sleep(3000)
-            load_streams()
-            return False
         return True  # keep stream alive
 
     def on_timeout(self):
