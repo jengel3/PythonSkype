@@ -63,6 +63,7 @@ def twitter_listen(chat, message, args, sender):
     listens = conf.get('twitter_listens', None)
     if listens is None:
         conf['listens'] = {}
+        listens = {}
     if args[0] in listens:
         user_json = listens[args[0]]
         chats = user_json['chats']
@@ -85,6 +86,7 @@ def twitter_listen(chat, message, args, sender):
         conf['listens'][args[0]]['chats'] = chats
     else:
         chats = [chat.Name]
+        conf['listens'][args[0]] = {}
         listens.update({args[0]: {}})
         conf['listens'][args[0]]['chats'] = chats
         conf['listens'][args[0]]['id'] = userids[0]
