@@ -1,5 +1,6 @@
 from util import plugin
 from util.plugin import command
+from util.pastes import post_gist
 
 
 @command(name="help", aliases="commands", help="Display a list of commands")
@@ -11,4 +12,5 @@ def choose(chat, message, args, sender):
     message = "Commands:\n"
     for cmd, desc in helps.items():
         message += "* " + str(cmd) + " - " + str(desc) + "\n"
-    chat.SendMessage(message)
+    url = post_gist(message)
+    chat.SendMessage("Output: {}".format(url))
