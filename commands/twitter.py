@@ -8,6 +8,7 @@ import config
 import re
 
 streams = {}
+current_stream = None
 
 
 @command(name="tweet", help="Twitter command")
@@ -101,6 +102,9 @@ def get_chat_by_name(name):
 
 
 def load_streams():
+    global current_stream
+    if current_stream is not None:
+        current_stream.disconnect()
     streams.clear()
     conf = config.config()
     users = conf.get("twitter_listens", {})
@@ -120,6 +124,7 @@ def load_streams():
     s = StreamWatcherListener()
     stream = tweepy.Stream(auth, s, timeout=None)
     stream.filter(follow=userids, async=True)
+    current_stream = stream
     print "Loaded {} Twitter streams.".format(len(userids))
 
 
