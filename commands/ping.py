@@ -5,7 +5,7 @@ import os
 
 @command(name='ping', help='Ping an IP, with the output as you would see it in the command line.')
 def ping_command(chat, message, args, sender):
-    if len(args) == 0:
+    if len(args) != 1:
         chat.SendMessage("Provide an IP to ping.")
         return
     ip = args[0]
