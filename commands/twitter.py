@@ -53,6 +53,8 @@ def twitter_listen(chat, message, args, sender):
         chat.SendMessage("Provide a user to listen to.")
         return
     api = get_api()
+    if api is None:
+        return
     user = api.get_user(args[0])
     if not user:
         chat.SendMessage("User not found")

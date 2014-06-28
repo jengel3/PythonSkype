@@ -8,10 +8,12 @@ def get_api():
 
 def get_auth():
     conf = config.config()
-    consumer_key = conf.get("keys", {}).get("twitter_api_key", None).decode('utf8')
-    consumer_secret = conf.get("keys", {}).get("twitter_api_secret", None).decode('utf8')
-    access_token_key = conf.get("keys", {}).get("twitter_access_key", None).decode('utf8')
-    access_token_secret = conf.get("keys", {}).get("twitter_access_secret", None).decode('utf8')
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token_key, access_token_secret)
+    consumer_key = conf.get("keys", {}).get("twitter_api_key", None)
+    consumer_secret = conf.get("keys", {}).get("twitter_api_secret", None)
+    access_token_key = conf.get("keys", {}).get("twitter_access_key", None)
+    access_token_secret = conf.get("keys", {}).get("twitter_access_secret", None)
+    if consumer_key is None or consumer_secret is None or access_token_key is None or access_token_secret is None:
+        return None
+    auth = tweepy.OAuthHandler(bytes(consumer_key), bytes(consumer_secret))
+    auth.set_access_token(bytes(access_token_key), bytes(access_token_secret))
     return auth
