@@ -9,7 +9,7 @@ CHANNEL_API = "https://api.twitch.tv/kraken/channels/{}"
 STREAM_API = "https://api.twitch.tv/kraken/streams/{}"
 
 
-@command(name='twitch')
+@command(name='twitch', help="Retrieve info about a Twitch livestreamer.")
 def twitch_command(chat, message, args, sender):
     if len(args) != 1:
         chat.SendMessage("Provide a streamer to search for.")

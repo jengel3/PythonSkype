@@ -108,6 +108,7 @@ def dispatch(message, status):
 
     :type message: ChatMessage
     """
+    print status
     if status == 'SENT' or status == 'RECEIVED':
         msg_time = message.Datetime
         if msg_time < get_minute_ago():
