@@ -74,7 +74,6 @@ def twitter_listen(chat, message, args, sender):
     for username in username_list:
         user = api.get_user(screen_name=username)
         userids.append(str(user.id))
-
     streams.update({chat: args[0]})
     chat.SendMessage("Updated with new stream for {}".format(args[0]))
     args[0] = args[0].lower()
@@ -115,6 +114,8 @@ def load_streams():
         for chat_id in chats:
             chat = get_chat_by_name(chat_id)
             streams.update({chat: user})
+    if len(streams) == 0:
+        return
 
     auth = get_auth()
     s = StreamWatcherListener()
