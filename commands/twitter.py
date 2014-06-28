@@ -114,7 +114,7 @@ def load_streams():
         for chat_id in chats:
             chat = get_chat_by_name(chat_id)
             streams.update({chat: user})
-    if len(streams) == 0:
+    if len(userids) == 0:
         return
 
     auth = get_auth()
