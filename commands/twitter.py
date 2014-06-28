@@ -60,7 +60,9 @@ def twitter_listen(chat, message, args, sender):
         chat.SendMessage("User not found")
         return
     conf = config.config()
-    listens = conf.get('twitter_listens', {})
+    listens = conf.get('twitter_listens', None)
+    if listens is None:
+        conf['listens'] = {}
     if args[0] in listens:
         user_json = listens[args[0]]
         chats = user_json['chats']
@@ -80,12 +82,12 @@ def twitter_listen(chat, message, args, sender):
     if args[0] in listens:
         chats = listens[args[0]]['chats']
         chats.append(chat.Name)
-        listens[args[0]]['chats'] = chats
+        conf['listens'][args[0]]['chats'] = chats
     else:
         chats = [chat.Name]
         listens.update({args[0]: {}})
-        listens[args[0]]['chats'] = chats
-        listens[args[0]]['id'] = userids[0]
+        conf['listens'][args[0]]['chats'] = chats
+        conf['listens'][args[0]]['id'] = userids[0]
 
     config.save(conf)
     load_streams()
