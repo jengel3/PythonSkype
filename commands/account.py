@@ -2,6 +2,7 @@ from util.plugin import command
 from util.minecraft import verify
 from util.minecraft import has_paid
 
+
 @command(name='verify', help='Check if Minecraft credentials are valid.')
 def verify_account(chat, message, args, sender):
     if len(args) != 2:
