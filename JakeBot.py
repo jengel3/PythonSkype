@@ -11,12 +11,12 @@ sys.path += ['commands']
 version = 1.0  # Version number
 
 
-def reload_plugins():
+def reload_plugins(sky):
     fileset = set(glob.glob(os.path.join('commands', '*.py')))
     for filename in fileset:
         try:
             code = compile(open(filename, 'U').read(), filename, 'exec')
-            namespace = {}
+            namespace = {'skype': sky}
             eval(code, namespace)
         except Exception:
             traceback.print_exc()
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     if not skype.Client.IsRunning:
         skype.Client.Start()
     skype.Attach()
-    reload_plugins()
+    reload_plugins(skype)
     skype.OnMessageStatus = plugin.dispatch
     skype.OnUserAuthorizationRequestReceived = add_contact
     print("Commands have been loaded and the bot is running.")

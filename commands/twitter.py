@@ -5,7 +5,6 @@ from util.plugin import event
 from util.twitter_api import get_api
 from util.twitter_api import get_auth
 import config
-import Skype4Py
 import re
 
 streams = {}
@@ -96,10 +95,6 @@ def twitter_listen(chat, message, args, sender):
 
 
 def get_chat_by_name(name):
-    skype = Skype4Py.Skype()
-    if not skype.Client.IsRunning:
-        skype.Client.Start()
-    skype.Attach()
     for chat_id in skype.Chats:
         if chat_id.Name == name:
             return chat_id

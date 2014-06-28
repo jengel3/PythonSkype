@@ -2,7 +2,6 @@ import urllib
 import json
 import config
 import threading
-import Skype4Py
 from time import sleep
 
 from util.plugin import command
@@ -90,10 +89,6 @@ def start_listener():
 
 
 def get_chat_by_name(name):
-    skype = Skype4Py.Skype()
-    if not skype.Client.IsRunning:
-        skype.Client.Start()
-    skype.Attach()
     for chat_id in skype.Chats:
         if chat_id.Name == name:
             return chat_id
