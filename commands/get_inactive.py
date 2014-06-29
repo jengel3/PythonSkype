@@ -37,7 +37,12 @@ def inactive_search(chat, message, args, sender):
     for user in chat_members:
         if user not in active_members:
             data += user + '\n'
-    chat.SendMessage(post_gist(data))
+    if data == '':
+        chat.SendMessage("All users are active!")
+        return
+    else:
+        url = post_gist(data)
+        chat.SendMessage(url)
     print "OLDEST: " + str(oldest)
 
 

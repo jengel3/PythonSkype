@@ -26,5 +26,5 @@ def post_gist(text):
 
     r = requests.post('https://api.github.com/gists', data=json.dumps(payload),
                       headers={"Content-Type": "application/json"})
-
+    print r.json()
     return r.json()['html_url']
