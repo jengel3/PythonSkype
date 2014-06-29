@@ -16,7 +16,7 @@ def post_uxixe(text):
 def post_gist(text):
     payload = {
         "description": "Jake Bot Output",
-        "public": True,
+        "public": False,
         "files": {
             "output.txt": {
                 "content": text
