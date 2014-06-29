@@ -19,8 +19,9 @@ def inactive_search(chat, message, args, sender):
     print chat_members
     active_members = []
     oldest = datetime.datetime.now()
+    print sub_months(datetime.datetime.now(), 2)
     for message in messages:
-        if message.Datetime < get_months_ago():
+        if message.Datetime < sub_months(datetime.datetime.now(), 2):
             oldest = message.Datetime
             continue
         handle = message.Sender.Handle
@@ -47,5 +48,9 @@ def inactive_search(chat, message, args, sender):
     print "OLDEST: " + str(oldest)
 
 
-def get_months_ago():
-    return datetime.datetime.now() - datetime.timedelta(weeks=8)
+def sub_months(sourcedate, months):
+    month = sourcedate.month - 1 - months
+    year = sourcedate.year + month / 12
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return datetime.datetime(year, month, day)
