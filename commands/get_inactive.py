@@ -1,5 +1,6 @@
 import datetime
 import calendar
+from util.pastes import post_gist
 
 from util.plugin import command
 
@@ -32,9 +33,11 @@ def inactive_search(chat, message, args, sender):
             break
     print "Completed analysis of chat."
     print "Printing inactive members that have not posted in the last two months:"
+    data = ''
     for user in chat_members:
         if user not in active_members:
-            print user
+            data += user + '\n'
+    chat.SendMessage(post_gist(data))
     print "OLDEST: " + str(oldest)
 
 
