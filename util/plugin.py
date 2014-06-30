@@ -148,7 +148,6 @@ def dispatch(message, status):
         func = commands[cmd]
         handler = func_handlers[func]
         handler.add({'data': message, 'type': 'command'})
-        message.MarkAsSeen()
 
 
 def run(func, args):
