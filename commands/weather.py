@@ -31,7 +31,7 @@ def get_forecast(zmw, loc):
     key = conf.get("keys", {}).get("wunderground", None)
     if key is None:
         return None
-    url = forecast_api.format(key, zmw)
+    url = forecast_api % (key, zmw)
     data = json.loads(http.get_url_data(url))
     forecast = data['forecast']
     simple_forecast = forecast['simpleforecast']
