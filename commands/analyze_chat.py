@@ -16,6 +16,8 @@ def inactive_search(chat, message, args, sender):
             senders[handle] += 1
         else:
             senders[handle] = 1
+    print "Completed analysis of chat."
+    print "Writing statistics to file."
     data = ''
     for user, amount in senders.items():
         data += u'%s:%s:%s\n' % (user, amount, percentage(amount, chat_length))

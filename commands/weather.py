@@ -27,6 +27,7 @@ def weather_command(chat, message, args, sender):
 
 
 def get_forecast(zmw, loc):
+    conf = config.config()
     key = conf.get("keys", {}).get("wunderground", None)
     if key is None:
         return None

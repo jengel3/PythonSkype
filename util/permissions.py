@@ -20,11 +20,12 @@ def has_permission(user, permission):
         return False
 
 
-def add_permission(user, permission, conf, load=False):
+def add_permission(user, permission, load=False):
     perms = get_permissions(user)
     perms.append(permission)
     user_permissions.update({user: perms})
     if not load:
+        conf = config.config()
         users = conf.get('users', {})
         if user not in users:
             users.update({user: {'permissions': []}})
@@ -34,12 +35,13 @@ def add_permission(user, permission, conf, load=False):
         config.save(conf)
 
 
-def remove_permission(user, permission, conf):
+def remove_permission(user, permission):
     perms = get_permissions(user)
     if permission not in perms:
         return
     perms.remove(permission)
     user_permissions.update({user: perms})
+    conf = config.config()
     users = conf.get('users', {})
     if user not in users:
         return
@@ -49,15 +51,16 @@ def remove_permission(user, permission, conf):
     config.save(conf)
 
 
-def load_permissions(conf):
+def load_permissions():
     print "Loading permissions..."
+    conf = config.config()
     users = conf.get('users', {})
     for user in users:
         permissions = users[user]['permissions']
         if not permissions:
             continue
         for permission in permissions:
-            add_permission(user, permission, conf, load=True)
+            add_permission(user, permission, load=True)
     print "Loaded permissions for {} users.".format(len(users))
     print "Loading operators..."
     config_operators = conf.get('operators', [])
@@ -66,7 +69,8 @@ def load_permissions(conf):
     print "Loaded operator status for {} users.".format(len(config_operators))
 
 
-def add_operator(new_op, conf):
+def add_operator(new_op):
+    conf = config.config()
     config_operators = conf.get('operators', [])
     if new_op in config_operators:
         return False
@@ -76,7 +80,8 @@ def add_operator(new_op, conf):
     return True
 
 
-def remove_operator(remove_op, conf):
+def remove_operator(remove_op):
+    conf = config.config()
     config_operators = conf.get('operators', [])
     if remove_op not in config_operators:
         return False

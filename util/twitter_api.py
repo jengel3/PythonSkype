@@ -1,11 +1,13 @@
+import config
 import tweepy
 
 
-def get_api(conf):
-    return tweepy.API(get_auth(conf))
+def get_api():
+    return tweepy.API(get_auth())
 
 
-def get_auth(conf):
+def get_auth():
+    conf = config.config()
     consumer_key = conf.get("keys", {}).get("twitter_api_key", None)
     consumer_secret = conf.get("keys", {}).get("twitter_api_secret", None)
     access_token_key = conf.get("keys", {}).get("twitter_access_key", None)

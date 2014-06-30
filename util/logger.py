@@ -5,10 +5,6 @@ MESSAGES_NAME = "messages.txt"
 
 
 def log(message):
-    """
-
-    :type message: String
-    """
     msg = u'[%s] %s' % (str(datetime.datetime.now())[:19], message)
     print(msg)
     logfile = open(FILE_NAME, 'a')

@@ -16,13 +16,13 @@ def perms(chat, message, args, sender):
         if len(args) < 3:
             chat.SendMessage("Provide a permission to set.")
             return
-        permissions.add_permission(handle, args[2], conf)
+        permissions.add_permission(handle, args[2])
         chat.SendMessage("Permission added.")
     elif args[0] == "remove":
         if len(args) < 3:
             chat.SendMessage("Provide a permission to remove.")
             return
-        permissions.remove_permission(handle, args[2], conf)
+        permissions.remove_permission(handle, args[2])
         chat.SendMessage("Permission removed.")
     elif args[0] == "list":
         temp = ''
@@ -41,7 +41,7 @@ def op_command(chat, message, args, sender):
         chat.SendMessage("Provide a user to make operator.")
         return
     operator = args[0].lower()
-    valid = permissions.add_operator(operator, conf)
+    valid = permissions.add_operator(operator)
     if valid:
         chat.SendMessage("Successfully made %s operator." % operator)
     else:
@@ -54,7 +54,7 @@ def deop_command(chat, message, args, sender):
         chat.SendMessage("Provide a user to remove as operator.")
         return
     operator = args[0].lower()
-    valid = permissions.remove_operator(operator, conf)
+    valid = permissions.remove_operator(operator)
     if valid:
         chat.SendMessage("Successfully removed %s as operator." % operator)
     else:
