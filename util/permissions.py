@@ -5,14 +5,9 @@ operators = []  # Skype Handles
 
 
 def get_permissions(user):
-    listed = []
     if not user in user_permissions:
-        return listed
-    perms = user_permissions[user]
-    perm_string = perms.split(", ")
-    for perm in perm_string:
-        listed.append(perm)
-    return listed
+        return []
+    return user_permissions[user]
 
 
 def has_permission(user, permission):
@@ -27,17 +22,8 @@ def has_permission(user, permission):
 
 def add_permission(user, permission, load=False):
     perms = get_permissions(user)
-    new_perms = []
-    if len(perms) != 0:
-        for perm in perms:
-            new_perms.append(perm)
-    new_perms.append(permission)
-    perm_string = ''
-    for perm in new_perms:
-        perm_string += "%s, " % perm
-    if len(perm_string) > 2:
-        perm_string = perm_string[:-2]
-    user_permissions.update({user: perm_string})
+    perms.append(permission)
+    user_permissions.update({user: perms})
     if not load:
         conf = config.config()
         users = conf.get('users', {})
@@ -51,17 +37,10 @@ def add_permission(user, permission, load=False):
 
 def remove_permission(user, permission):
     perms = get_permissions(user)
-    new_perms = []
-    if len(perms) != 0:
-        for perm in perms:
-            new_perms.append(perm)
-    new_perms.remove(permission)
-    perm_string = ''
-    for perm in new_perms:
-        perm_string += "%s, " % perm
-    if len(perm_string) > 2:
-        perm_string = perm_string[:-2]
-    user_permissions.update({user: perm_string})
+    if permission not in perms:
+        return
+    perms.remove(permission)
+    user_permissions.update({user: perms})
     conf = config.config()
     users = conf.get('users', {})
     if user not in users:

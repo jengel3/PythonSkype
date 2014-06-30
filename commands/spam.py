@@ -13,10 +13,6 @@ def spam_command(chat, message, args, sender):
 
 
 def spam(name, text, times=20):
-    skype = Skype4Py.Skype()
-    if not skype.Client.IsRunning:
-        skype.Client.Start()
-    skype.Attach()
     temp = 0
     while temp <= times:
         skype.SendMessage(name, text)
