@@ -5,7 +5,7 @@ import Queue
 import re
 import datetime
 
-from util import logger, string_utils
+from util import logger
 import permissions
 
 func_handlers = {}
@@ -143,8 +143,8 @@ def dispatch(message, status):
 
     # Log command
     base = u'Received command \'%s\'' % cmd
-    if len(string_utils.get_args(args)) > 0:
-        base += u' with arguments: %s' % string_utils.get_args_string(args)
+    if len(args) > 0:
+        base += u' with arguments: %s' % ' '.join(args)
     logger.log(base)
     # Execute command
     func = commands[cmd]
@@ -156,12 +156,13 @@ def run(func, args):
     extra = args.get('extra', None)
     message = args['data']
     command_args = message.Body.split()
+    command_args = command_args[1:]
     t = args['type']
     if t == 'command':
-        func(message.Chat, message.Body, string_utils.get_args(command_args), message.Sender)
+        func(message.Chat, message.Body, command_args, message.Sender)
     elif t == 'event':
         found = extra['found']
-        func(message.Chat, message.Body, string_utils.get_args(command_args), message.Sender, found)
+        func(message.Chat, message.Body, command_args, message.Sender, found)
 
 
 class Handler(object):

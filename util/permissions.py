@@ -87,7 +87,7 @@ def load_permissions():
     config_operators = conf.get('operators', [])
     for operator in config_operators:
         operators.append(operator)
-    print "Loaded operator status for {} users.".format(str(config_operators))
+    print "Loaded operator status for {} users.".format(len(config_operators))
 
 
 def add_operator(new_op):
