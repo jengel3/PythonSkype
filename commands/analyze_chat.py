@@ -1,4 +1,5 @@
 from util.plugin import command
+from util.pastes import post_gist
 
 
 @command(name="analyze", help="Analyze and get statistics about a chat.", permission="command.analyze")
@@ -17,10 +18,11 @@ def inactive_search(chat, message, args, sender):
             senders[handle] = 1
     print "Completed analysis of chat."
     print "Writing statistics to file."
-    text_file = open('chat-analysis.txt', 'a')
+    data = ''
     for user, amount in senders.items():
-        text_file.write(u'{}:{}:{}\n'.format(user, amount, percentage(amount, chat_length)))
-    text_file.close()
+        data += u'%s:%s:%s\n' % (user, amount, percentage(amount, chat_length))
+    url = post_gist(data)
+    chat.SendMessage("Analysis output: %s" % url)
 
 
 def percentage(part, whole):

@@ -5,8 +5,8 @@ import json
 import re
 
 
-CHANNEL_API = "https://api.twitch.tv/kraken/channels/{}"
-STREAM_API = "https://api.twitch.tv/kraken/streams/{}"
+CHANNEL_API = "https://api.twitch.tv/kraken/channels/%s"
+STREAM_API = "https://api.twitch.tv/kraken/streams/%s"
 
 
 @command(name='twitch', help="Retrieve info about a Twitch livestreamer.")
@@ -24,7 +24,7 @@ def twitch_command(chat, message, args, sender):
 
 @event(name='twitch-regex', regex=r'(?:(?:www.twitch.tv|twitch.tv)\/)([-_a-zA-Z0-9]+)')
 def twich_regex(chat, message, args, sender, found):
-    match = re.search(r'(?:(?:www.twitch.tv|twitch.tv)\/)([-_a-zA-Z0-9]+)', message)
+    match = re.search(r'(?:(?:www.twitch.tv|twitch.tv)/)([-_a-zA-Z0-9]+)', message)
     streamer = match.group(1)
     data = get_streamer_data(streamer)
     if data is None:
@@ -33,7 +33,7 @@ def twich_regex(chat, message, args, sender, found):
 
 
 def get_streamer_data(streamer):
-    stream = json.loads(http.get_url_data(STREAM_API.format(streamer)))
+    stream = json.loads(http.get_url_data(STREAM_API % streamer))
     if 'error' in stream:
         return None
     online = stream.get('stream', None)
@@ -49,13 +49,13 @@ def get_streamer_data(streamer):
         status = chan['status']
         display = chan['display_name']
         followers = chan['followers']
-        msg = '{} |LIVE|: {} - {} | Viewers: {} | Followers: {}'.format(display, game, status, viewers, followers)
+        msg = '%s |LIVE|: %s - %s | Viewers: %s | Followers: %s' % (display, game, status, viewers, followers)
         return msg
     else:
-        chan = json.loads(http.get_url_data(CHANNEL_API.format(streamer)))
+        chan = json.loads(http.get_url_data(CHANNEL_API % streamer))
         game = chan['game']
         display = chan['display_name']
         views = chan['views']
         followers = chan['followers']
-        msg = '{} |OFFLINE|: {} | Views: {} | Followers: {}'.format(display, game, views, followers)
+        msg = '%s |OFFLINE|: %s | Views: %s | Followers: %s' % (display, game, views, followers)
         return msg

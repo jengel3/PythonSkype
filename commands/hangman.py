@@ -30,7 +30,8 @@ def hangman(chat, message, args, sender):
             message.Body = ''
             last_messages.remove(message)
     if letter in guessed:
-        last_messages.append(chat.SendMessage('{}: The letter {} has already been guessed'.format(sender.Handle, letter)))
+        last_messages.append(chat.SendMessage('{}: The letter {} has already been guessed'
+                                              .format(sender.Handle, letter)))
         return
     guessed.append(letter)
     if letter in current_word:

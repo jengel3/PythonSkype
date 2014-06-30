@@ -1,5 +1,4 @@
-import requests
-import json
+import http
 
 
 def post_uxixe(text):
@@ -7,10 +6,9 @@ def post_uxixe(text):
         'content': text
     }
 
-    r = requests.post('http://uxixe.com/api/new_gist', data=json.dumps(payload),
-                      headers={"Content-Type": "application/json"})
+    json_data = http.post('http://uxixe.com/api/new_gist', payload, {"Content-Type": "application/json"})
 
-    return r.json()['html_url']
+    return json_data['html_url']
 
 
 def post_gist(text):
@@ -24,7 +22,5 @@ def post_gist(text):
         }
     }
 
-    r = requests.post('https://api.github.com/gists', data=json.dumps(payload),
-                      headers={"Content-Type": "application/json"})
-    print r.json()
-    return r.json()['html_url']
+    json_data = http.post('https://api.github.com/gists', payload, headers={"Content-Type": "application/json"})
+    return json_data['html_url']

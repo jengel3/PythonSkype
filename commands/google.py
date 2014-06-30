@@ -11,10 +11,10 @@ def google_command(chat, message, args, sender):
     results, count = get_results(query, 'web')
     if count == 0:
         chat.SendMessage("No results found.")
-    sb = u'First 2 results of {} for \'{}\':\n'.format(str(count), query)
+    sb = u'First 2 results of %s for \'%s\':\n' % (str(count), query)
     temp = 1
     for title, link in results.items():
-        sb += "{}. {} - {}\n".format(str(temp), title, link)
+        sb += "%s. %s - %s\n" % (str(temp), title, link)
         if temp == 2:
             break
         temp += 1

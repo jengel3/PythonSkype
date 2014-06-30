@@ -5,24 +5,18 @@ from util.pastes import post_gist
 from util.plugin import command
 
 
-
 @command(name="inactive", help="Find inactive users", permission="command.inactive")
 def inactive_search(chat, message, args, sender):
     if len(args) > 0:
         chat.SendMessage("No arguments required.")
         return
     messages = chat.Messages
-    print len(messages)
     chat_members = []
     for member in chat.Members:
         chat_members.append(member.Handle)
-    print chat_members
     active_members = []
-    oldest = datetime.datetime.now()
-    print sub_months(datetime.datetime.now(), 2)
     for message in messages:
         if message.Datetime < sub_months(datetime.datetime.now(), 2):
-            oldest = message.Datetime
             continue
         handle = message.Sender.Handle
         if handle not in chat_members:
@@ -45,7 +39,6 @@ def inactive_search(chat, message, args, sender):
     else:
         url = post_gist(data)
         chat.SendMessage(url)
-    print "OLDEST: " + str(oldest)
 
 
 def sub_months(sourcedate, months):

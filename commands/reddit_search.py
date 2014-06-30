@@ -15,7 +15,7 @@ def post(chat, message, args, sender, found):
         found = found[:-1]
     try:
         submission = r.get_submission(url='http://' + found)
-        chat.SendMessage('{} - by /u/{} - {}'.format(submission.title, submission.author, submission.short_link))
+        chat.SendMessage('%s - by /u/%s - %s' % (submission.title, submission.author, submission.short_link))
     except praw.requests.exceptions.HTTPError:
         pass
 
@@ -39,7 +39,7 @@ def reddit_user(chat, message, args, sender):
     link_karma = redditor.link_karma
     user_name = redditor.name
     page_link = redditor._url
-    msg = '{} - Comment Karma: {} - Link Karma: {} - {}'.format(user_name, comment_karma, link_karma, page_link)
+    msg = '%s - Comment Karma: %s - Link Karma: %s - %s' % (user_name, comment_karma, link_karma, page_link)
     chat.SendMessage(msg)
 
 
@@ -62,5 +62,5 @@ def reddit_sub(chat, message, args, sender):
     subs = subreddit.subscribers
     desc = subreddit.public_description
     display = subreddit.display_name
-    msg = '{} - {} | Subscribers: {} - {}'.format(display, desc, subs, url)
+    msg = '%s - %s | Subscribers: %s - %s' % (display, desc, subs, url)
     chat.SendMessage(msg)

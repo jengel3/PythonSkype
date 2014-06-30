@@ -27,5 +27,5 @@ def itunes_command(chat, message, args, sender):
     artist = result['artistName']
     album = result['collectionName']
     link = result['trackViewUrl']
-    msg = "Track: {} | Artist: {} | Album: {} | {}".format(track, artist, album, link)
+    msg = "Track: %s | Artist: %s | Album: %s | %s" % (track, artist, album, link)
     chat.SendMessage(msg)

@@ -4,7 +4,7 @@ import json
 from util.http import get_url_data
 
 
-api_video = "https://gdata.youtube.com/feeds/api/videos/{}?v=2&alt=json"
+api_video = "https://gdata.youtube.com/feeds/api/videos/%s?v=2&alt=json"
 
 
 @event(name="youtube_link", regex="youtube\.com/watch\?.*?v=([A-Za-z0-9-_]+)|youtu\.be/([A-Za-z0-9-_]+)")
@@ -18,7 +18,7 @@ def youtube_link(chat, message, args, sender, found):
 
 
 def get_video_info(video_id):
-    final_link = api_video.format(video_id)
+    final_link = api_video % video_id
     json_data = json.loads(get_url_data(final_link))
     entry = json_data['entry']
     author = entry['author'][0]['name']['$t']
@@ -26,6 +26,6 @@ def get_video_info(video_id):
     likes = entry['yt$rating']['numLikes']
     dislikes = entry['yt$rating']['numDislikes']
     title = entry['title']['$t']
-    final_message = u"{} - by: {} - Views: {} Likes: {} Dislikes: {}".format(title, author, views, likes, dislikes)
+    final_message = u"%s - by: %s - Views: %s Likes: %s Dislikes: %s" % (title, author, views, likes, dislikes)
     return final_message
 

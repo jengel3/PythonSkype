@@ -43,9 +43,9 @@ def op_command(chat, message, args, sender):
     operator = args[0].lower()
     valid = permissions.add_operator(operator)
     if valid:
-        chat.SendMessage("Successfully made {} operator.".format(operator))
+        chat.SendMessage("Successfully made %s operator." % operator)
     else:
-        chat.SendMessage("Unable to make {} operator.".format(operator))
+        chat.SendMessage("Unable to make %s operator." % operator)
 
 
 @command(name='deop', help='Remove a user\' operator status.')
@@ -56,6 +56,6 @@ def deop_command(chat, message, args, sender):
     operator = args[0].lower()
     valid = permissions.remove_operator(operator)
     if valid:
-        chat.SendMessage("Successfully removed {} as operator.".format(operator))
+        chat.SendMessage("Successfully removed %s as operator." % operator)
     else:
-        chat.SendMessage("Unable to remove {} as operator.".format(operator))
+        chat.SendMessage("Unable to remove %s as operator." % operator)

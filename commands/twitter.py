@@ -25,6 +25,8 @@ def tweets(chat, message, args, sender):
         chat.SendMessage("Unable to process")
         return
     api = get_api()
+    if api is None:
+        return
     try:
         user = api.get_user(args[0])
         if not user:
@@ -44,7 +46,7 @@ def tweets(chat, message, args, sender):
 
 
 def format_status(status):
-    return '@{}: {}'.format(status.user.screen_name, status.text)
+    return '@%s: %s' % (status.user.screen_name, status.text)
 
 
 @command(name="listen", help="Twitter live data stream")
@@ -102,6 +104,9 @@ def get_chat_by_name(name):
 
 
 def load_streams():
+    auth = get_auth()
+    if auth is None:
+        return
     global current_stream
     if current_stream is not None:
         current_stream.disconnect()
@@ -120,12 +125,11 @@ def load_streams():
     if len(userids) == 0:
         return
 
-    auth = get_auth()
     s = StreamWatcherListener()
     stream = tweepy.Stream(auth, s, timeout=None)
     stream.filter(follow=userids, async=True)
     current_stream = stream
-    print "Loaded {} Twitter streams.".format(len(userids))
+    print "Loaded %s Twitter streams." % len(userids)
 
 
 class StreamWatcherListener(tweepy.StreamListener):
@@ -136,7 +140,7 @@ class StreamWatcherListener(tweepy.StreamListener):
                 if user.lower() == status.author.screen_name.lower():
                     chats_to_send.append(chat)
             for chat in chats_to_send:
-                chat.SendMessage(u'#TWEET UPDATE FOR @{}#\n{}'.format(status.author.screen_name, status.text))
+                chat.SendMessage(u'#TWEET UPDATE FOR @%s#\n%s' % (status.author.screen_name, status.text))
         except:
             pass
 
@@ -157,6 +161,8 @@ def twitter_url(chat, message, args, sender, found):
     match = re.search("(?:(?:www.twitter.com|twitter.com)/(?:[-_a-zA-Z0-9]+)/status/)([0-9]+)", message)
     tweet_id = match.group(1)
     api = get_api()
+    if api is None:
+        return
     try:
         tweet = api.get_status(tweet_id)
     except tweepy.error.TweepError:

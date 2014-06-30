@@ -3,7 +3,8 @@
         "twitter_api_key": "",
         "twitter_api_secret": "",
         "twitter_access_key": "",
-        "twitter_access_secret": ""
+        "twitter_access_secret": "",
+        "wunderground": ""
     },
     "users": {
         "jake0oo0": {

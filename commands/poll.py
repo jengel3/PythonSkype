@@ -55,9 +55,9 @@ class Poll:
         self.start_poll()
 
     def start_poll(self):
-        self.chat.SendMessage("{} has started a poll with the question '{}'. The choices are:\n {} "
-                              "Use !vote <letter> to cast your vote.".format(self.poller, self.question,
-                                                                             self.get_formatted_choices()))
+        self.chat.SendMessage("%s has started a poll with the question '%s'. The choices are:\n %s "
+                              "Use !vote <letter> to cast your vote." % (self.poller, self.question,
+                                                                         self.get_formatted_choices()))
 
     def end_poll(self, print_outcome=True):
         if not print_outcome:
@@ -66,25 +66,25 @@ class Poll:
         formatted_message = 'The results are in, and are as follows:\n'
         shown_choices = []
         for choice, count in self.count_votes().items():
-            formatted_message += "{}: {} votes\n".format(self.letter_choices[choice], str(count))
+            formatted_message += "%s: %s votes\n" % (self.letter_choices[choice], str(count))
             shown_choices.append(self.letter_choices[choice])
         for option in self.options:
             if option in shown_choices:
                 continue
             shown_choices.append(option)
-            formatted_message += "{}: {} votes\n".format(option, str(0))
+            formatted_message += "%s: %s votes\n" % (option, str(0))
         self.chat.SendMessage(formatted_message)
 
     def vote(self, voter, letter):
         if voter in self.votes:
-            self.chat.SendMessage("{}: You have already voted".format(voter))
+            self.chat.SendMessage("%s: You have already voted" % voter)
             return
         valid = self.is_valid_letter(letter)
         if not valid:
             self.chat.SendMessage("Invalid choice.")
             return
         self.votes.update({voter: letter})
-        self.chat.SendMessage("{} has voted for letter {}".format(voter, letter))
+        self.chat.SendMessage("%s has voted for letter %s" % (voter, letter))
 
     def is_valid_letter(self, letter):
         return letter in self.letter_choices
@@ -115,12 +115,12 @@ class Poll:
         choices = self.get_choice_list()
         choices_text = ''
         for letter, choice in choices.items():
-            choices_text += "{}) {}\n".format(letter, choice)
+            choices_text += "%s) %s\n" % (letter, choice)
         return choices_text
 
 
 def get_alphabet(begin='a', end='z'):
     begin = ord(begin)
     end = ord(end)
-    for number in xrange(begin, end+1):
+    for number in xrange(begin, end + 1):
         yield chr(number)

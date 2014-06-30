@@ -13,15 +13,15 @@ render = "| {} | {} | {} | {} | {} | {} | {} |\n" \
          "|---------------------------|\n" \
          "| {} | {} | {} | {} | {} | {} | {} |\n" \
          "|---------------------------|\n" \
- \
-    # !ttt start josh0309
+
+# !ttt start josh0309
 # !ttt move a3
 # !ttt quit
 games = {}
 
 
 @command(name='connectfour', aliases='c4, connect4, cfour',
-         help="Play Tic tac toe with a friend! Start a game with !ttt start <user>")
+         help="Play Connect Four with a friend! Start a game with !c4 start <user>")
 def connect_four(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Provide an argument.")
@@ -32,7 +32,7 @@ def connect_four(chat, message, args, sender):
             return
         game = ConnectFour(chat, sender.Handle, args[1])
         games.update({game.id: game})
-        chat.SendMessage("Started game.\n{}, use !c4 move column to move. For example: !ttt move 3"
+        chat.SendMessage("Started game.\n{}, use !c4 move column to move. For example: !c4 move 3"
                          .format(game.move))
     elif args[0] == "end":
         game = get_game_by_sender(chat, sender.Handle)

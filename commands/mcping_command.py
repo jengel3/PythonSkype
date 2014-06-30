@@ -22,13 +22,12 @@ def mcping_command(chat, message, args, sender):
     try:
         info = mcping.get_info(ip, port)
     except:
-        chat.SendMessage("Unable to ping {}".format('{}:{}'.format(ip, port)))
+        chat.SendMessage("Unable to ping %s:%s" % (ip, port))
         return
     players_max = info['players']['max']
     players_online = info['players']['max']
     version_name = info['version']['name']
     motd = info['description'].encode('utf-8')
     motd_new = re.sub(re.compile(r"(?i)§[0-9A-FK-OR]"), '', motd)
-    msg = u'Online Players: {}/{} | Version: {} | MOTD: {}'.format(players_online, players_max, version_name,
-                                                                   motd_new)
+    msg = u'Online Players: %s/%s | Version: %s | MOTD: %s' % (players_online, players_max, version_name, motd_new)
     chat.SendMessage(msg)

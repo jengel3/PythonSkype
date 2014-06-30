@@ -48,7 +48,7 @@ class Kick:
         thread.start_new_thread(self.start, ())
 
     def start(self):
-        self.chat.SendMessage("Voting to kick {}. 20 Seconds remain.".format(self.user))
+        self.chat.SendMessage("Voting to kick %s. 20 Seconds remain." % self.user)
         sleep(10)
         self.chat.SendMessage("10 seconds remain.")
         sleep(5)
@@ -59,10 +59,10 @@ class Kick:
 
     def vote(self, user, choice):
         if user in self.votes:
-            self.chat.SendMessage(user + ": You have already voted.")
+            self.chat.SendMessage("%s: You have already voted." % user)
             return
         self.votes.update({user: choice})
-        self.chat.SendMessage(user + " voted " + str(choice))
+        self.chat.SendMessage("%s voted %s" % (user, str(choice)))
 
     def decide(self):
         yesses = 0
@@ -70,18 +70,19 @@ class Kick:
             if choice:
                 yesses += 1
         if yesses > 4:
-            self.chat.SendMessage("The chat has voted to kick " + self.user)
+            self.chat.SendMessage("The chat has voted to kick %s" % self.user)
             self.chat.Kick(self.user)
         else:
-            self.chat.SendMessage("Not enough votes were received to kick " + self.user + ". Only " + str(yesses) +
-                                  " yesses were received.")
+            self.chat.SendMessage("Not enough votes were received to kick %s. Only %s yes votes were received."
+                                  % (self.user, str(yesses)))
         vote_kicks.pop(self.chat)
 
 
 def parse_choice(choice):
-    if choice.lower() == 'true' or choice.lower() == 'yes':
+    choice = choice.lower()
+    if choice == 'true' or choice == 'yes':
         return True
-    elif choice.lower() == 'false' or choice.lower() == 'no':
+    elif choice == 'false' or choice == 'no':
         return False
     else:
         return None

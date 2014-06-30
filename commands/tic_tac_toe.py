@@ -14,7 +14,7 @@ render = "A | {} | {} | {} |\n" \
 games = {}
 
 
-@command(name='ttt', help="Play Tic tac toe with a friend! Start a game with !ttt start <user>")
+@command(name='ttt', help="Play Tic Tac Toe with a friend! Start a game with !ttt start <user>")
 def tic_tac_toe(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Provide an argument.")
@@ -96,13 +96,13 @@ class TicTacToe:
             return True
         winner = self.get_winner()
         if winner is not None:
-            self.chat.SendMessage("{} wins!".format(self.get_user_from_mark(winner)))
+            self.chat.SendMessage("%s wins!" % self.get_user_from_mark(winner))
             return True
         if handle == self.partner:
             self.move = self.user
         elif handle == self.user:
             self.move = self.partner
-        self.chat.SendMessage("It is now {}'s turn.".format(self.move))
+        self.chat.SendMessage("It is now %s's turn." % self.move)
 
     @staticmethod
     def get_type_mark(num):

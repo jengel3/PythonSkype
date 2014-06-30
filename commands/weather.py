@@ -4,8 +4,8 @@ import json
 import config as config
 
 
-auto_complete = 'http://autocomplete.wunderground.com/aq?query={}'
-forecast_api = "http://api.wunderground.com/api/{}/forecast/q/zmw:{}.json"
+auto_complete = 'http://autocomplete.wunderground.com/aq?query=%s'
+forecast_api = "http://api.wunderground.com/api/%s/forecast/q/zmw:%s.json"
 
 
 @command(name='weather', help='Get the weather of an area.')
@@ -13,20 +13,24 @@ def weather_command(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("You must specify a location.")
         return
-    json_data = json.loads(http.get_url_data(auto_complete.format(args[0])))
+    json_data = json.loads(http.get_url_data(auto_complete % args[0]))
     results = json_data['RESULTS']
     if results is None or len(results) == 0:
-        chat.SendMessage("No match found for {}.".format(args[0]))
+        chat.SendMessage("No match found for %s." % args[0])
         return
     location = results[0]['name']
     zmw = results[0]['zmw']
     response = get_forecast(zmw, location)
+    if response is None:
+        return
     chat.SendMessage(response)
 
 
 def get_forecast(zmw, loc):
     conf = config.config()
     key = conf.get("keys", {}).get("wunderground", None)
+    if key is None:
+        return None
     url = forecast_api.format(key, zmw)
     data = json.loads(http.get_url_data(url))
     forecast = data['forecast']
@@ -40,9 +44,9 @@ def get_forecast(zmw, loc):
     high_cel = high['celsius']
     conditions = day_forecast['conditions']
     humidity = day_forecast['avehumidity']
-    return "{} - Sky Conditions: {} | Temps - High: {}F/{}C | Low: {}F/{}C | Humidity: {}".format(loc, conditions,
-                                                                                                  high_far,
-                                                                                                  high_cel, low_far,
-                                                                                                  low_cel,
-                                                                                                  humidity)
+    return "%s - Sky Conditions: %s | Temps - High: %sF/%sC | Low: %sF/%sC | Humidity: %s" % (loc, conditions,
+                                                                                              high_far,
+                                                                                              high_cel, low_far,
+                                                                                              low_cel,
+                                                                                              humidity)
 

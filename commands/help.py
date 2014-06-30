@@ -11,6 +11,6 @@ def choose(chat, message, args, sender):
 
     message = "Commands:\n"
     for cmd, desc in helps.items():
-        message += "* " + str(cmd) + " - " + str(desc) + "\n"
+        message += "* %s - %s\n" % (str(cmd), str(desc))
     url = post_gist(message)
-    chat.SendMessage("Output: {}".format(url))
+    chat.SendMessage("Output: %s" % url)

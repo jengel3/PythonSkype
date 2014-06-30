@@ -7,7 +7,7 @@ def get_args_string(args):
     argiterator = iter(args)
     next(argiterator)
     for arg in argiterator:
-        argstring += "{0} ".format(arg)
+        argstring += "%s " % arg
     return argstring
 
 

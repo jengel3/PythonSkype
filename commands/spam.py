@@ -8,7 +8,7 @@ def spam_command(chat, message, args, sender):
         chat.SendMessage("Provide a user and message.")
         return
     user = args[0]
-    msg = message.replace('!spam {} '.format(user), '')
+    msg = message.replace('!spam %s ' % user, '')
     spam(user, msg)
 
 

@@ -3,7 +3,8 @@ import json
 import urllib
 
 
-PAID_URL = "https://minecraft.net/haspaid.jsp?user={}"
+PAID_URL = "https://minecraft.net/haspaid.jsp?user=%s"
+
 
 def verify(user, password):
     payload = {
@@ -25,5 +26,5 @@ def verify(user, password):
 
 
 def has_paid(user):
-    data = urllib.urlopen(PAID_URL.format(user)).read()
+    data = urllib.urlopen(PAID_URL % user).read()
     return bool(data)

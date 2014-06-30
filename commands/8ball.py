@@ -14,4 +14,4 @@ def eight_ball(chat, message, args, sender):
     amount = len(responses)
     rand = random.randint(0, amount - 1)
     response = responses[rand]
-    chat.SendMessage(sender.Handle + ": " + response)
+    chat.SendMessage("%s: %s" % (sender.Handle, response))

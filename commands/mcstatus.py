@@ -115,7 +115,7 @@ def listen():
         else:
             sb = 'The following services have changed status: \n'
             for serv in changed:
-                sb += '{} is now {}\n'.format(serv, new_statuses[serv])
+                sb += '%s is now %s\n' % (serv, new_statuses[serv])
             for chat_id in listeners:
                 chat = get_chat_by_name(chat_id)
                 chat.SendMessage(sb)

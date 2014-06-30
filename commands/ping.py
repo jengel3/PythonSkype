@@ -10,10 +10,10 @@ def ping_command(chat, message, args, sender):
         return
     ip = args[0]
     if os.name == 'nt':
-        process = subprocess.Popen('ping {} -n 3 -w 2000'.format(ip), stdout=subprocess.PIPE)
+        process = subprocess.Popen('ping %s -n 3 -w 2000' % ip, stdout=subprocess.PIPE)
         out, err = process.communicate()
         chat.SendMessage(out)
     else:
-        process = subprocess.Popen('ping {} -c 3 -w 2000'.format(ip), stdout=subprocess.PIPE)
+        process = subprocess.Popen('ping %s -c 3 -w 2000' % ip, stdout=subprocess.PIPE)
         out, err = process.communicate()
         chat.SendMessage(out)

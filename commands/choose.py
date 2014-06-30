@@ -10,4 +10,4 @@ def choose(chat, message, args, sender):
         return
     rand = random.randint(0, len(args) - 1)
     choice = args[rand]
-    chat.SendMessage("I choose...{0}".format(choice))
+    chat.SendMessage("I choose...%s" % choice)
