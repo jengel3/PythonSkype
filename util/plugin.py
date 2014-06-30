@@ -109,7 +109,6 @@ def dispatch(message, status):
     :type message: ChatMessage
     """
     if status == 'SENT' or status == 'RECEIVED':
-        message.MarkAsSeen()
         msg_time = message.Datetime
         if msg_time < get_minute_ago():
             return
@@ -149,6 +148,7 @@ def dispatch(message, status):
         func = commands[cmd]
         handler = func_handlers[func]
         handler.add({'data': message, 'type': 'command'})
+        message.MarkAsSeen()
 
 
 def run(func, args):
