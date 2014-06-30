@@ -2,17 +2,17 @@ from util.plugin import command
 from util.string_utils import get_random_string
 
 render = "| {} | {} | {} | {} | {} | {} | {} |\n" \
-         "------------------------------------\n" \
+         "|---------------------------|\n" \
          "| {} | {} | {} | {} | {} | {} | {} |\n" \
-         "------------------------------------\n" \
+         "|---------------------------|\n" \
          "| {} | {} | {} | {} | {} | {} | {} |\n" \
-         "------------------------------------\n" \
+         "|---------------------------|\n" \
          "| {} | {} | {} | {} | {} | {} | {} |\n" \
-         "------------------------------------\n" \
+         "|---------------------------|\n" \
          "| {} | {} | {} | {} | {} | {} | {} |\n" \
-         "------------------------------------\n" \
+         "|---------------------------|\n" \
          "| {} | {} | {} | {} | {} | {} | {} |\n" \
-         "------------------------------------\n" \
+         "|---------------------------|\n" \
  \
     # !ttt start josh0309
 # !ttt move a3
@@ -52,7 +52,7 @@ def connect_four(chat, message, args, sender):
         if game is None:
             chat.SendMessage("You do not have a running game.")
             return
-        remove = game.make_move(sender.Handle, move[1], move[0])
+        remove = game.make_move(sender.Handle, move)
         if remove:
             games.pop(game.id)
 
@@ -71,12 +71,11 @@ class ConnectFour:
         self.move = partner
         self.id = get_random_string(6)
         self.columns = ['1', '2', '3', '4', '5', '6', '7']
-        self.current_tiles = [- 1, -1, -1, -1, -1, -1, -1  # -1 = Space
+        self.current_tiles = [- 1, -1, -1, -1, -1, -1, -1,  # -1 = Space
                               - 1, -1, -1, -1, -1, -1, -1,  # 0 = O
-                              - 1, -1, -1, -1, -1, -1, -1
-                              - 1, -1, -1, -1, -1, -1, -1
-                              - 1, -1, -1, -1, -1, -1, -1
-                              - 1, -1, -1, -1, -1, -1, -1
+                              - 1, -1, -1, -1, -1, -1, -1,
+                              - 1, -1, -1, -1, -1, -1, -1,
+                              - 1, -1, -1, -1, -1, -1, -1,
                               - 1, -1, -1, -1, -1, -1, -1]  # 1 = X
 
     def make_move(self, handle, column):
@@ -98,7 +97,7 @@ class ConnectFour:
         while '{}' in temp_render:
             temp_render = temp_render.replace('{}', str(self.get_type_mark(self.current_tiles[temp])), 1)
             temp += 1
-            if temp >= 9:
+            if temp == 42:
                 break
         self.chat.SendMessage(temp_render)
         if -1 not in self.current_tiles:
@@ -145,31 +144,42 @@ class ConnectFour:
         if column not in self.columns:
             return None
         current_column = self.columns.index(column)
-        temp = current_column * 7
+        temp = 41 - (6 - current_column)
         while True:
             if self.current_tiles[temp] != -1:
                 temp -= 7
+                if temp <= 0:
+                    return None
                 continue
             else:
                 return temp
 
     def get_winner(self):
         counter = 0
-        row_one = [self.current_tiles[0], self.current_tiles[1], self.current_tiles[2]]
-        row_two = [self.current_tiles[3], self.current_tiles[4], self.current_tiles[5]]
-        row_three = [self.current_tiles[6], self.current_tiles[7], self.current_tiles[8]]
-        rows = [row_one, row_two, row_three]
+        rows = [[self.current_tiles[0], self.current_tiles[1], self.current_tiles[2], self.current_tiles[3],
+                 self.current_tiles[4], self.current_tiles[5], self.current_tiles[6]],
+                [self.current_tiles[7], self.current_tiles[8], self.current_tiles[9], self.current_tiles[10],
+                 self.current_tiles[11], self.current_tiles[12], self.current_tiles[13]],
+                [self.current_tiles[14], self.current_tiles[15], self.current_tiles[16], self.current_tiles[17],
+                 self.current_tiles[18], self.current_tiles[19], self.current_tiles[20]],
+                [self.current_tiles[21], self.current_tiles[22], self.current_tiles[23], self.current_tiles[24],
+                 self.current_tiles[25], self.current_tiles[26], self.current_tiles[27]],
+                [self.current_tiles[28], self.current_tiles[29], self.current_tiles[30], self.current_tiles[31],
+                 self.current_tiles[32], self.current_tiles[33], self.current_tiles[34]],
+                [self.current_tiles[35], self.current_tiles[36], self.current_tiles[37], self.current_tiles[38],
+                 self.current_tiles[39], self.current_tiles[40], self.current_tiles[41]]]
+
         for row in rows:
             for num in row:
                 if num == 0 and counter >= 0:
                     counter += 1
-                    if counter == 3:
+                    if counter == 4:
                         return num
                 if num == 0 and counter < 0:
                     counter = 0
                 if num == 1 and counter <= 0:
                     counter -= 1
-                    if counter == -3:
+                    if counter == -4:
                         return num
                 if num == 1 and counter > 0:
                     counter = 0
