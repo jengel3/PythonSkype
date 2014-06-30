@@ -24,7 +24,7 @@ def tweets(chat, message, args, sender):
     if num > 300:
         chat.SendMessage("Unable to process")
         return
-    api = get_api()
+    api = get_api(conf)
     if api is None:
         return
     try:
@@ -54,14 +54,13 @@ def twitter_listen(chat, message, args, sender):
     if len(args) == 0:
         chat.SendMessage("Provide a user to listen to.")
         return
-    api = get_api()
+    api = get_api(conf)
     if api is None:
         return
     user = api.get_user(args[0])
     if not user:
         chat.SendMessage("User not found")
         return
-    conf = config.config()
     listens = conf.get('twitter_listens', None)
     if listens is None:
         conf['twitter_listens'] = {}
@@ -104,14 +103,13 @@ def get_chat_by_name(name):
 
 
 def load_streams():
-    auth = get_auth()
+    auth = get_auth(conf)
     if auth is None:
         return
     global current_stream
     if current_stream is not None:
         current_stream.disconnect()
     streams.clear()
-    conf = config.config()
     users = conf.get("twitter_listens", {})
     userids = []
     for user in users:
@@ -160,7 +158,7 @@ class StreamWatcherListener(tweepy.StreamListener):
 def twitter_url(chat, message, args, sender, found):
     match = re.search("(?:(?:www.twitter.com|twitter.com)/(?:[-_a-zA-Z0-9]+)/status/)([0-9]+)", message)
     tweet_id = match.group(1)
-    api = get_api()
+    api = get_api(conf)
     if api is None:
         return
     try:
@@ -172,7 +170,6 @@ def twitter_url(chat, message, args, sender, found):
     chat.SendMessage(format_status(tweet))
 
 
-confi = config.config()
-env = confi.get("env", "production")
+env = conf.get("env", "production")
 if env != "dev":
     load_streams()

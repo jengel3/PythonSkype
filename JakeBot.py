@@ -4,6 +4,7 @@ import traceback
 import sys
 from util.permissions import load_permissions
 import Skype4Py
+import config
 
 from util import plugin
 
@@ -11,12 +12,12 @@ sys.path += ['commands']
 version = 1.0  # Version number
 
 
-def reload_plugins(sky):
+def reload_plugins(args):
     fileset = set(glob.glob(os.path.join('commands', '*.py')))
     for filename in fileset:
         try:
             code = compile(open(filename, 'U').read(), filename, 'exec')
-            namespace = {'skype': sky}
+            namespace = args
             eval(code, namespace)
         except Exception:
             traceback.print_exc()
@@ -29,12 +30,13 @@ def add_contact(user):
 
 if __name__ == "__main__":
     print("Starting SkypeBot %s" % version)
-    load_permissions()
+    config = config.config()
+    load_permissions(config)
     skype = Skype4Py.Skype()
     if not skype.Client.IsRunning:
         skype.Client.Start()
     skype.Attach()
-    reload_plugins(skype)
+    reload_plugins({'skype': skype, 'conf': config})
     skype.OnMessageStatus = plugin.dispatch
     skype.OnUserAuthorizationRequestReceived = add_contact
     print("Commands have been loaded and the bot is running.")

@@ -19,7 +19,6 @@ def choose(chat, message, args, sender):
     if len(args) == 1:
         if args[0].lower() == '--listen':
             listeners.append(chat.Name)
-            conf = config.config()
             config_operators = conf.get('mc_listens', [])
             if chat.Name in config_operators:
                 chat.SendMessage("This chat is already listening to Minecraft service statuses.")
@@ -29,7 +28,6 @@ def choose(chat, message, args, sender):
             config.save(conf)
             return
         elif args[0].lower() == '--unlisten':
-            conf = config.config()
             config_operators = conf.get('mc_listens', [])
             if chat.Name not in config_operators:
                 chat.SendMessage("This chat is not currently listening to Minecraft service statuses.")
@@ -78,7 +76,6 @@ def format_status(check_service=None):
 
 
 def load_listeners():
-    conf = config.config()
     chats = conf.get('mc_listens', [])
     for chat in chats:
         listeners.append(chat)
