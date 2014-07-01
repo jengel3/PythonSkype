@@ -18,3 +18,6 @@ def fml_command(chat, message, args, sender):
     chat.SendMessage("#%s: %s" % (fml_id, text))
     if len(cached) < 3:
         get_new()
+
+
+get_new()
