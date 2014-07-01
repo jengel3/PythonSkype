@@ -1,11 +1,13 @@
 import bs4
 from util.plugin import command
+import util.http as http
+
 
 cached = []
 
 
 def get_new():
-    soup = bs4.BeautifulSoup('http://www.fmylife.com/random', 'lxml')
+    soup = bs4.BeautifulSoup(http.get_url_data('http://www.fmylife.com/random'))
     for e in soup.find_all('div', {'class': 'post article'}):
         fml_id = int(e['id'])
         text = ''.join(e.find('p').find_all(text=True))

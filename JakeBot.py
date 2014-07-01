@@ -4,11 +4,13 @@ import traceback
 import sys
 from util.permissions import load_permissions
 import Skype4Py
+import datetime
 
 from util import plugin
 
 sys.path += ['commands']
 version = 1.0  # Version number
+chats = []
 
 
 def reload_plugins(sky):
@@ -37,6 +39,9 @@ if __name__ == "__main__":
     reload_plugins(skype)
     skype.OnMessageStatus = plugin.dispatch
     skype.OnUserAuthorizationRequestReceived = add_contact
+    print "Loading chats..."
+    for chat in skype.Chats:
+        if chat.ActivityTimestamp > 3600 * 24 * 180:
+            continue
+        chats.append(chat)
     print("Commands have been loaded and the bot is running.")
-
-
