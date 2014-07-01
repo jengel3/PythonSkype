@@ -25,7 +25,7 @@ def mcping_command(chat, message, args, sender):
         chat.SendMessage("Unable to ping %s:%s" % (ip, port))
         return
     players_max = info['players']['max']
-    players_online = info['players']['max']
+    players_online = info['players']['online']
     version_name = info['version']['name']
     motd = info['description'].encode('utf-8')
     motd_new = re.sub(re.compile(r"(?i)§[0-9A-FK-OR]"), '', motd)
