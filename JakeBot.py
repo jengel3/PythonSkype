@@ -4,7 +4,6 @@ import traceback
 import sys
 from util.permissions import load_permissions
 import Skype4Py
-import datetime
 
 from util import plugin
 
@@ -33,15 +32,24 @@ if __name__ == "__main__":
     print("Starting SkypeBot %s" % version)
     load_permissions()
     skype = Skype4Py.Skype()
+
     if not skype.Client.IsRunning:
         skype.Client.Start()
     skype.Attach()
-    reload_plugins(skype)
+    print "Attached to Skype"
+
     skype.OnMessageStatus = plugin.dispatch
     skype.OnUserAuthorizationRequestReceived = add_contact
+    print "Loaded API links."
+
     print "Loading chats..."
     for chat in skype.Chats:
         if chat.ActivityTimestamp > 3600 * 24 * 180:
             continue
         chats.append(chat)
-    print("Commands have been loaded and the bot is running.")
+    print "Chats loaded."
+
+    reload_plugins(skype)
+    print "Loaded plugins."
+
+    print("Bot is loaded, and ready to go!")
