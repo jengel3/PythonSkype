@@ -142,10 +142,10 @@ def dispatch(message, status):
             return
 
     # Log command
-    base = u'Received command \'%s\'' % cmd
-    if len(args) > 0:
-        base += u' with arguments: %s' % ' '.join(args)
-    logger.log(base)
+    #base = u'Received command \'%s\'' % cmd
+    #if len(args) > 0:
+    #    base += u' with arguments: %s' % ' '.join(args)
+    #logger.log(base)
     # Execute command
     func = commands[cmd]
     handler = func_handlers[func]
